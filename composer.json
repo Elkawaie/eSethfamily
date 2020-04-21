@@ -26,13 +26,14 @@
         "symfony/twig-pack": "*",
         "symfony/validator": "4.4.*",
         "symfony/web-link": "4.4.*",
-        "symfony/yaml": "4.4.*"
-    },
-    "require-dev": {
+        "symfony/yaml": "4.4.*",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*"
+    },
+    "require-dev": {
+
     },
     "config": {
         "preferred-install": {
