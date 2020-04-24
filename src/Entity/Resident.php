@@ -26,6 +26,21 @@ class Resident
      */
     private $prenom;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Famille", inversedBy="resident")
+     */
+    private $famille;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="fkResident", cascade={"persist", "remove"})
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ehpad", inversedBy="residents")
+     */
+    private $ehpad;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +66,48 @@ class Resident
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getFamille(): ?Famille
+    {
+        return $this->famille;
+    }
+
+    public function setFamille(?Famille $famille): self
+    {
+        $this->famille = $famille;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newFkResident = null === $user ? null : $this;
+        if ($user->getFkResident() !== $newFkResident) {
+            $user->setFkResident($newFkResident);
+        }
+
+        return $this;
+    }
+
+    public function getEhpad(): ?ehpad
+    {
+        return $this->ehpad;
+    }
+
+    public function setEhpad(?ehpad $ehpad): self
+    {
+        $this->ehpad = $ehpad;
 
         return $this;
     }

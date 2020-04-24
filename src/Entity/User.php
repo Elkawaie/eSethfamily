@@ -38,6 +38,21 @@ class User implements UserInterface
      */
     private $actif = false;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Famille", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $fkFamille;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Resident", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $fkResident;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ehpad", inversedBy="users")
+     */
+    private $ehpad;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +144,42 @@ class User implements UserInterface
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function getFkFamille(): ?Famille
+    {
+        return $this->fkFamille;
+    }
+
+    public function setFkFamille(?Famille $fkFamille): self
+    {
+        $this->fkFamille = $fkFamille;
+
+        return $this;
+    }
+
+    public function getFkResident(): ?Resident
+    {
+        return $this->fkResident;
+    }
+
+    public function setFkResident(?Resident $fkResident): self
+    {
+        $this->fkResident = $fkResident;
+
+        return $this;
+    }
+
+    public function getEhpad(): ?ehpad
+    {
+        return $this->ehpad;
+    }
+
+    public function setEhpad(?ehpad $ehpad): self
+    {
+        $this->ehpad = $ehpad;
 
         return $this;
     }
