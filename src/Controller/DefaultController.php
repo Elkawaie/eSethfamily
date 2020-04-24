@@ -25,7 +25,7 @@ class DefaultController extends AbstractController
                 return $this->redirectToRoute('resident');
                 break;
             default:
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('app_login');
         }
     }
 
