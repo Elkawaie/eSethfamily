@@ -3,10 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+
+
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/chartist.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/color_skins.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
+
+        <script src="{{ asset('bundles/libscripts.bundle.js') }}"></script>
+        <script src="{{ asset('bundles/vendorscripts.bundle.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
