@@ -10,6 +10,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     'public/css/bootstrap.min.css': 'assets/vendor/bootstrap/css/bootstrap.min.css', /* Bootstrap CSS */
+                    'public/css/font-awesome.min.css': 'assets/vendor/font-awesome/css/font-awesome.min.css',
                     'public/css/chartist.min.css': [                                                   /* Chartist css */
                         'assets/vendor/css/chartist.min.css',
                         'assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css'
@@ -41,6 +42,9 @@ module.exports = function(grunt) {
 
                     'public/bundles/datatablescripts.bundle.js': ['assets/vendor/jquery-datatable/jquery.dataTables.min.js','assets/vendor/jquery-datatable/dataTables.bootstrap4.min.js'], /* Jquery DataTable Plugin Js  */
                     'public/bundles/flotscripts.bundle.js': ['assets/vendor/flot-charts/jquery.flot.js','assets/vendor/flot-charts/jquery.flot.resize.js','assets/vendor/flot-charts/jquery.flot.pie.js','assets/vendor/flot-charts/jquery.flot.categories.js','assets/vendor/flot-charts/jquery.flot.time.js'], /* Flot Chart js*/
+                    'public/js/index.js': 'assets/js/index.js',
+                    'public/bundles/toastr.js': 'assets/vendor/toastr/toastr.js',
+                    'public/bundles/jquery.flot.selection.js': 'assets/vendor/flot-charts/jquery.flot.selection.js'
 
                 }
             }
