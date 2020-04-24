@@ -28,6 +28,7 @@ class UserFixtures extends Fixture
             $password = 'userFamilly';
             $user->setPassword($this->encoder->encodePassword($user, (string)$password));
             $user->setRoles(array_unique(['ROLE_FAMILLY']));
+            $user->setActif(true);
             $manager->persist($user);
         }
         for($b =0; $b <10; $b++){
@@ -36,6 +37,7 @@ class UserFixtures extends Fixture
             $password = 'userResident';
             $user->setPassword($this->encoder->encodePassword($user, (string)$password));
             $user->setRoles(array_unique(['ROLE_RESIDENT']));
+            $user->setActif(true);
             $manager->persist($user);
         }
         for($c =0; $c <10; $c++){
@@ -44,6 +46,7 @@ class UserFixtures extends Fixture
             $password = 'userEmploye';
             $user->setPassword($this->encoder->encodePassword($user, (string)$password));
             $user->setRoles(array_unique(['ROLE_EMPLOYE']));
+            $user->setActif(true);
             $manager->persist($user);
         }
         for($d =0; $d <10; $d++){
@@ -52,6 +55,7 @@ class UserFixtures extends Fixture
             $password = 'userAdmin';
             $user->setPassword($this->encoder->encodePassword($user, (string)$password));
             $user->setRoles(array_unique(['ROLE_ADMIN']));
+            $user->setActif(true);
             $manager->persist($user);
         }
 
