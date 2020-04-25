@@ -37,9 +37,14 @@ class Resident
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ehpad", inversedBy="residents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ehpad", inversedBy="residents")
      */
     private $ehpad;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $numResident;
 
     public function getId(): ?int
     {
@@ -108,6 +113,18 @@ class Resident
     public function setEhpad(?ehpad $ehpad): self
     {
         $this->ehpad = $ehpad;
+
+        return $this;
+    }
+
+    public function getNumResident(): ?string
+    {
+        return $this->numResident;
+    }
+
+    public function setNumResident(string $numResident): self
+    {
+        $this->numResident = $numResident;
 
         return $this;
     }

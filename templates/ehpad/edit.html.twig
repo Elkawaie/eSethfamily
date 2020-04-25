@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Ehpad{% endblock %}
+
+{% block body %}
+    <h1>Edit Ehpad</h1>
+
+    {{ include('ehpad/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('ehpad_index') }}">back to list</a>
+
+    {{ include('ehpad/_delete_form.html.twig') }}
+{% endblock %}

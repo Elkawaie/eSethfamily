@@ -49,7 +49,7 @@ class User implements UserInterface
     private $fkResident;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ehpad", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ehpad", inversedBy="users")
      */
     private $ehpad;
 

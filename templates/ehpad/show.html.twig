@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ehpad{% endblock %}
+
+{% block body %}
+    <h1>Ehpad</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ehpad.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ ehpad.nom }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ ehpad.adresse }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('ehpad_index') }}">back to list</a>
+
+    <a href="{{ path('ehpad_edit', {'id': ehpad.id}) }}">edit</a>
+
+    {{ include('ehpad/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ehpad index{% endblock %}
+
+{% block body %}
+    <h1>Ehpad index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ehpad in ehpads %}
+            <tr>
+                <td>{{ ehpad.id }}</td>
+                <td>{{ ehpad.nom }}</td>
+                <td>{{ ehpad.adresse }}</td>
+                <td>
+                    <a href="{{ path('ehpad_show', {'id': ehpad.id}) }}">show</a>
+                    <a href="{{ path('ehpad_edit', {'id': ehpad.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ehpad_new') }}">Create new</a>
+{% endblock %}
