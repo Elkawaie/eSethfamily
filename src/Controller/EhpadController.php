@@ -21,8 +21,15 @@ class EhpadController extends AbstractController
      */
     public function index(EhpadRepository $ehpadRepository): Response
     {
-        return $this->render('ehpad/index.html.twig', [
-            'ehpads' => $ehpadRepository->findAll(),
+        $view = 'ehpad/index.html.twig';
+        $ehpads= $ehpadRepository->findAll();
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            $ehpads= $ehpadRepository->findAll();
+            $view = 'admin/ehpad/index.html.twig';
+        }
+
+        return $this->render($view, [
+            'ehpads' => $ehpads
         ]);
     }
 
@@ -37,7 +44,6 @@ class EhpadController extends AbstractController
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $formType = EhpadAdminType::class;
             $view = 'admin/ehpad/new.html.twig';
-
         }
         $form = $this->createForm($formType, $ehpad);
         $form->handleRequest($request);
@@ -61,7 +67,12 @@ class EhpadController extends AbstractController
      */
     public function show(Ehpad $ehpad): Response
     {
-        return $this->render('ehpad/show.html.twig', [
+        $view = 'ehpad/show.html.twig';
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            $view = 'admin/ehpad/show.html.twig';
+        }
+
+        return $this->render($view, [
             'ehpad' => $ehpad,
         ]);
     }
@@ -71,7 +82,13 @@ class EhpadController extends AbstractController
      */
     public function edit(Request $request, Ehpad $ehpad): Response
     {
-        $form = $this->createForm(EhpadType::class, $ehpad);
+        $formType = EhpadType::class;
+        $view = 'ehpad/edit.html.twig';
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            $formType = EhpadAdminType::class;
+            $view = 'admin/ehpad/edit.html.twig';
+        }
+        $form = $this->createForm($formType, $ehpad);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -80,7 +97,7 @@ class EhpadController extends AbstractController
             return $this->redirectToRoute('ehpad_index');
         }
 
-        return $this->render('ehpad/edit.html.twig', [
+        return $this->render($view, [
             'ehpad' => $ehpad,
             'form' => $form->createView(),
         ]);

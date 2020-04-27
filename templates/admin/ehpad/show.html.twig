@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello AdminController!{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dataTables.fixedheader.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('sweetalert.css') }}">
+{% endblock %}
 {% block body %}
     <body class="theme-cyan">
 
@@ -194,14 +200,37 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="header">
-                                <h2>Ajouter un nouvel Ehpad</h2>
-                                {{ include('ehpad/_formAdmin.html.twig') }}
-
+                                <h2>Details</h2>
+                            </div>
+                            <div class="body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover js-basic-example dataTable table-custom">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th class="text-center" colspan="2">Votre ehpad</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <td>{{ ehpad.nom }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Adresse</th>
+                                            <td>{{ ehpad.adresse }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row flex-column">
+                                    <a class="btn btn-success pr-4 pl-4 text-center mr-3 align-self-end" href="{{ path('ehpad_edit', {'id': ehpad.id}) }}">Edit</a>
+                                        {{ include('admin/ehpad/_deleteAdmin_form.html.twig') }}
+                                        <a class="ml-3" href="{{ path('ehpad_index') }}">Retourner a la liste</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -223,5 +252,21 @@
     <script src="{{ asset('bundles/toastr.js') }}" ></script>
     <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
     <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/dataTableButton.bundle.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
 {% endblock %}
+
+
+{#{% block body %}#}
+{#    <h1>Ehpad</h1>#}
+
+{#    <table class="table">#}
+
+{#    </table>#}
+
+
+
+{#    #}
+{#{% endblock %}#}

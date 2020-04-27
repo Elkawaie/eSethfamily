@@ -15,6 +15,12 @@ module.exports = function(grunt) {
                         'assets/vendor/css/chartist.min.css',
                         'assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css'
                     ],
+                    'public/css/dataTable.bundle.css': [
+                        'assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css',
+                        'assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css',
+                        'assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css',
+                        'assets/vendor/sweetalert/sweetalert.css',
+                    ],
                     'public/css/toastr.min.css': 'assets/vendor/toastr/toastr.min.css',         /* Toastr css */
                     'public/css/main.css': 'assets/scss/main.scss', 	                        /* 'All main SCSS' */
                     'public/css/color_skins.css': 'assets/scss/color_skins.scss', 				/* 'All Color Option' */
@@ -40,7 +46,18 @@ module.exports = function(grunt) {
                     'public/bundles/jvectormap.bundle.js': ['assets/vendor/jvectormap/jquery-jvectormap-2.0.3.min.js','assets/vendor/jvectormap/jquery-jvectormap-world-mill-en.js'],   /* calender page js */
                     'public/bundles/easypiechart.bundle.js': ['assets/vendor/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js','assets/vendor/jquery.easy-pie-chart/easy-pie-chart.init.js'],
 
-                    'public/bundles/datatablescripts.bundle.js': ['assets/vendor/jquery-datatable/jquery.dataTables.min.js','assets/vendor/jquery-datatable/dataTables.bootstrap4.min.js'], /* Jquery DataTable Plugin Js  */
+                    'public/bundles/datatablescripts.bundle.js': [
+                        'assets/vendor/jquery-datatable/jquery.dataTables.min.js',
+                        'assets/vendor/jquery-datatable/dataTables.bootstrap4.min.js'
+                    ], /* Jquery DataTable Plugin Js  */
+                    'public/bundles/dataTableButton.bundle.js': [
+                        'assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js',
+                        'assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js',
+                        'assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js',
+                        'assets/vendor/jquery-datatable/buttons/buttons.html5.min.js',
+                        'assets/vendor/jquery-datatable/buttons/buttons.print.min.js'
+                    ],
+                    // 'public/bundles/sweetalert.min.js': 'assets/vendor/sweetalert/sweetalert.min.js',
                     'public/bundles/flotscripts.bundle.js': ['assets/vendor/flot-charts/jquery.flot.js','assets/vendor/flot-charts/jquery.flot.resize.js','assets/vendor/flot-charts/jquery.flot.pie.js','assets/vendor/flot-charts/jquery.flot.categories.js','assets/vendor/flot-charts/jquery.flot.time.js'], /* Flot Chart js*/
                     'public/js/index.js': 'assets/js/index.js',
                     'public/bundles/toastr.js': 'assets/vendor/toastr/toastr.js',
