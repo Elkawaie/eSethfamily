@@ -87,8 +87,16 @@
                                 <li><a href="app-appointment.html"><i class="icon-calendar"></i>Appointment</a></li>
                                 <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Ehpads</span> </a>
                                     <ul>
-                                        <li class="active"><a href="{{ path('ehpad_new') }}">Ajouter un ehpad</a></li>
-                                        <li><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
+                                        <li><a href="{{ path('ehpad_new') }}">Ajouter un ehpad</a></li>
+                                        <li class="active"><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
+                                    <ul>
+                                        <li><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
+                                        <li><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
+                                        <li><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
+                                        <li><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
                                     </ul>
                                 </li>
                             </ul>

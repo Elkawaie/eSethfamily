@@ -2,7 +2,7 @@
 
 {% block title %}Hello AdminController!{% endblock %}
 {% block stylesheets %}
-{{ parent() }}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dataTables.fixedcolumns.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dataTables.fixedheader.bootstrap4.min.css') }}">
@@ -91,16 +91,16 @@
                             <ul class="main-menu metismenu">
                                 <li><a href="index.html"><i class="icon-home"></i><span>Dashboard</span></a></li>
                                 <li><a href="app-appointment.html"><i class="icon-calendar"></i>Appointment</a></li>
-                                <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Ehpads</span> </a>
+                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Ehpads</span> </a>
                                     <ul>
                                         <li><a href="{{ path('ehpad_new') }}">Ajouter un ehpad</a></li>
-                                        <li class="active"><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
+                                        <li><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
+                                <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
                                     <ul>
                                         <li><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
-                                        <li><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
+                                        <li class="active"><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
                                         <li><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
                                         <li><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
                                     </ul>
@@ -220,25 +220,28 @@
                                         <thead class="thead-dark">
                                         <tr>
                                             <th>Nom</th>
-                                            <th>Adresse</th>
+                                            <th>Prenom</th>
+                                            <th>N°Résident</th>
                                             <th>Actions</th>
                                         </tr>
                                         </thead>
                                         <tfoot>
                                         <tr>
                                             <th>Nom</th>
-                                            <th>Adresse</th>
+                                            <th>Prenom</th>
+                                            <th>N°Résident</th>
                                             <th>Actions</th>
                                         </tr>
                                         </tfoot>
                                         <tbody>
-                                        {% for ehpad in ehpads %}
+                                        {% for resident in residents %}
                                             <tr>
-                                                <td>{{ ehpad.nom }}</td>
-                                                <td>{{ ehpad.adresse }}</td>
+                                                <td>{{ resident.nom }}</td>
+                                                <td>{{ resident.prenom }}</td>
+                                                <td>{{ resident.numResident }}</td>
                                                 <td>
-                                                    <a href="{{ path('ehpad_show', {'id': ehpad.id}) }}">show</a>
-                                                    <a href="{{ path('ehpad_edit', {'id': ehpad.id}) }}">edit</a>
+                                                    <a href="{{ path('resident_show', {'id': resident.id}) }}">show</a>
+                                                    <a href="{{ path('resident_edit', {'id': resident.id}) }}">edit</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
