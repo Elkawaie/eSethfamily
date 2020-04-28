@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Resident;
+use App\Form\ExcelFormType;
 use App\Form\ResidentAdminType;
 use App\Form\ResidentType;
 use App\Repository\ResidentRepository;
+use App\Service\Uploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +60,47 @@ class ResidentController extends AbstractController
             'resident' => $resident,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/setExcel", name="resident_setExcel")
+     * @param Request $request
+     * @param Uploader $uploader
+     * @return Response
+     */
+    public function setExcel(Request $request, Uploader $uploader){
+        $form = $this->createForm(ExcelFormType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $file = $form->get('fichier')->getData();
+            dump($file);
+            if($file){
+                $filename = $uploader->upload($file);
+            }
+            $datas = file($uploader->getTargetDirectory().'/'.$filename);
+            dump($datas);
+            $em = $this->getDoctrine()->getManager();
+            for($i = 1; $i < count($datas); $i++ ){
+                $resident_array = $str_arr = preg_split ("/\,/", $datas[$i]);
+                $resident = new Resident();
+                $resident->setNom($resident_array[0]);
+                $resident->setPrenom($resident_array[1]);
+                $resident->setNumResident($resident_array[2]);
+                $em->persist($resident);
+                $em->flush();
+            }
+        }
+        return $this->render('admin/resident/setExcel.html.twig',[
+            'form'=>$form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/getExcel",name="resident_getExcel")
+     */
+    public function getExcel(){
+
     }
 
     /**
@@ -114,17 +157,4 @@ class ResidentController extends AbstractController
         return $this->redirectToRoute('resident_index');
     }
 
-    /**
-     * @Route("/setExcel",name="resident_setExcel")
-     */
-    public function setExcel(){
-
-    }
-
-    /**
-     * @Route("/getExcel",name="resident_getExcel")
-     */
-    public function getExcel(){
-
-    }
 }

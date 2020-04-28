@@ -21,12 +21,12 @@ module.exports = function(grunt) {
                         'assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css',
                         'assets/vendor/sweetalert/sweetalert.css',
                     ],
+                    'public/css/dropify.min.css': 'assets/vendor/dropify/css/dropify.min.css',
                     'public/css/toastr.min.css': 'assets/vendor/toastr/toastr.min.css',         /* Toastr css */
                     'public/css/main.css': 'assets/scss/main.scss', 	                        /* 'All main SCSS' */
                     'public/css/color_skins.css': 'assets/scss/color_skins.scss', 				/* 'All Color Option' */
                     'public/css/chatapp.css': 'assets/scss/pages/chatapp.scss', 				/* 'Chat App SCSS to CSS' */
                     'public/css/inbox.css': 'assets/scss/pages/inbox.scss', 				    /* 'Inbox App SCSS to CSS' */
-
                 }]
             }
         },
@@ -37,6 +37,8 @@ module.exports = function(grunt) {
                     'public/bundles/vendorscripts.bundle.js': ['assets/vendor/metisMenu/metisMenu.js','assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js','assets/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js','assets/vendor/jquery-sparkline/js/jquery.sparkline.min.js'], /* coman js*/
 
                     'public/bundles/mainscripts.bundle.js':['assets/js/common.js'], /*coman js*/
+
+                    'public/bundles/dropify.bundle.js': 'assets/vendor/dropify/js/dropify.min.js',
 
                     'public/bundles/morrisscripts.bundle.js': ['assets/vendor/raphael/raphael.min.js','assets/vendor/morrisjs/morris.js'], /* Morris Plugin Js */
                     'public/bundles/knob.bundle.js': ['assets/vendor/jquery-knob/jquery.knob.min.js'], /* knob js*/
