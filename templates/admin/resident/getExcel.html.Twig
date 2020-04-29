@@ -2,6 +2,11 @@
 
 {% block title %}Hello AdminController!{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/dropify.min.css') }}">
+{% endblock %}
+
 {% block body %}
     <body class="theme-cyan">
 
@@ -94,9 +99,9 @@
                                 <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
                                     <ul>
                                         <li><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
-                                        <li class="active"><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
+                                        <li><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
                                         <li><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
-                                        <li><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
+                                        <li class="active"><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Utilisateurs</span> </a>
@@ -214,8 +219,7 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h2>Editer un ehpad</h2>
-                                {{ include('admin/resident/_formAdmin.html.twig', {'button_label': 'Update'}) }}
+                                <h2>Work in progress</h2>
 
                             </div>
                         </div>
@@ -232,11 +236,9 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
-    <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
-    <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
-    <script src="{{ asset('bundles/toastr.js') }}" ></script>
-    <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
+    <script src="{{ asset('js/dropify.min.js') }}"></script>
+    <script src="{{ asset('js/dropifyForm.js') }}"></script>
+
     <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
 {% endblock %}

@@ -98,10 +98,17 @@
                                 </li>
                                 <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
                                     <ul>
-                                        <li class="active"><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
+                                        <li><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
                                         <li><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
-                                        <li><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
+                                        <li class="active"><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
                                         <li><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Utilisateurs</span> </a>
+                                    <ul>
+                                        <li><a href="{{ path('admin_addUser') }}">Ajouter un utilisateur</a></li>
+                                        <li><a href="{{ path('admin_showAllUser') }}">Voir tous les utilisateur</a></li>
+                                        <li><a href="{{ path('admin_validateUser') }}">Valider un utilisateur</a></li>
                                     </ul>
                                 </li>
                             </ul>

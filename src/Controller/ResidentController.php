@@ -23,6 +23,10 @@ class ResidentController extends AbstractController
      */
     public function index(ResidentRepository $residentRepository): Response
     {
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
+            $view = 'employe/resident/index.html.twig';
+            $data = $residentRepository->findAll();
+        }
         $data = $residentRepository->findAll();
         $view = 'resident/index.html.twig';
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
@@ -74,22 +78,26 @@ class ResidentController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $file = $form->get('fichier')->getData();
-            dump($file);
             if($file){
                 $filename = $uploader->upload($file);
+                $datas = file($uploader->getTargetDirectory().'/'.$filename);
+                $em = $this->getDoctrine()->getManager();
+                for($i = 1; $i < count($datas); $i++ ){
+                    $resident_array =  preg_split ("/\,/", $datas[$i]);
+                    if($em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]])){
+                        $resident = $em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]]);
+                    }else{
+                        $resident[] = new Resident();
+                    }
+
+                    $resident[0]->setNom($resident_array[0]);
+                    $resident[0]->setPrenom($resident_array[1]);
+                    $resident[0]->setNumResident($resident_array[2]);
+                    $em->persist($resident[0]);
+                    $em->flush();
+                }
             }
-            $datas = file($uploader->getTargetDirectory().'/'.$filename);
-            dump($datas);
-            $em = $this->getDoctrine()->getManager();
-            for($i = 1; $i < count($datas); $i++ ){
-                $resident_array = $str_arr = preg_split ("/\,/", $datas[$i]);
-                $resident = new Resident();
-                $resident->setNom($resident_array[0]);
-                $resident->setPrenom($resident_array[1]);
-                $resident->setNumResident($resident_array[2]);
-                $em->persist($resident);
-                $em->flush();
-            }
+
         }
         return $this->render('admin/resident/setExcel.html.twig',[
             'form'=>$form->createView()
@@ -100,7 +108,7 @@ class ResidentController extends AbstractController
      * @Route("/getExcel",name="resident_getExcel")
      */
     public function getExcel(){
-
+        return $this->render('admin/resident/getExcel.html.twig');
     }
 
     /**

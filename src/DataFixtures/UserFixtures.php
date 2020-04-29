@@ -27,7 +27,7 @@ class UserFixtures extends Fixture
             $user->setEmail(sprintf('userFamilly%d@symfony.com',$a));
             $password = 'userFamilly';
             $user->setPassword($this->encoder->encodePassword($user, (string)$password));
-            $user->setRoles(array_unique(['ROLE_FAMILLY']));
+            $user->setRoles(array_unique(['ROLE_FAMILLE']));
             $user->setActif(true);
             $manager->persist($user);
         }
