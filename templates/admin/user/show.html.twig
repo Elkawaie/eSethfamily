@@ -1,0 +1,291 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dataTables.fixedheader.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('sweetalert.css') }}">
+{% endblock %}
+{% block body %}
+    <body class="theme-cyan">
+
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img src=".{{ asset('images/logo.svg') }}" width="48" height="48" alt="Lucid"></div>
+            <p>Patience Patience :D ...</p>
+        </div>
+    </div>
+    <!-- Overlay For Sidebars -->
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-btn">
+                    <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
+                </div>
+
+                <div class="navbar-brand">
+                    <a href="index.html"><img src="{{ asset('images/logo.svg') }}" alt="Lucid Logo" class="img-responsive logo"></a>
+                </div>
+
+                <div class="navbar-right">
+
+                    <div id="navbar-menu">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="doctor-events.html" class="icon-menu d-none d-sm-block d-md-none d-lg-block"><i class="icon-calendar"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown"><i class="icon-equalizer"></i></a>
+                                <ul class="dropdown-menu user-menu menu-icon">
+                                    <li class="menu-heading">ACCOUNT SETTINGS</li>
+                                    <li><a href="javascript:void(0);"><i class="icon-note"></i> <span>Basic</span></a></li>
+                                    <li><a href="javascript:void(0);"><i class="icon-equalizer"></i> <span>Preferences</span></a></li>
+                                    <li><a href="javascript:void(0);"><i class="icon-lock"></i> <span>Privacy</span></a></li>
+                                    <li><a href="javascript:void(0);"><i class="icon-bell"></i> <span>Notifications</span></a></li>
+                                    <li class="menu-heading">BILLING</li>
+                                    <li><a href="javascript:void(0);"><i class="icon-credit-card"></i> <span>Payments</span></a></li>
+                                    <li><a href="javascript:void(0);"><i class="icon-printer"></i> <span>Invoices</span></a></li>
+                                    <li><a href="javascript:void(0);"><i class="icon-refresh"></i> <span>Renewals</span></a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_logout') }}" class="icon-menu"><i class="icon-login"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div id="left-sidebar" class="sidebar">
+            <div class="sidebar-scroll">
+                <div class="user-account">
+                    <img src="../assets/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+                    <div class="dropdown">
+                        <span>Bienvenue,</span>
+                        <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>Dr. Chandler Bing</strong></a>
+                        <ul class="dropdown-menu dropdown-menu-right account">
+                            <li><a href="doctor-profile.html"><i class="icon-user"></i>My Profile</a></li>
+                            <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li>
+                            <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="page-login.html"><i class="icon-power"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#menu">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#sub_menu"><i class="icon-grid"></i></a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content p-l-0 p-r-0">
+                    <div class="tab-pane active" id="menu">
+                        <nav class="sidebar-nav">
+                            <ul class="main-menu metismenu">
+                                <li><a href="index.html"><i class="icon-home"></i><span>Dashboard</span></a></li>
+                                <li><a href="app-appointment.html"><i class="icon-calendar"></i>Appointment</a></li>
+                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Ehpads</span> </a>
+                                    <ul>
+                                        <li><a href="{{ path('ehpad_new') }}">Ajouter un ehpad</a></li>
+                                        <li><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
+                                    </ul>
+                                </li>
+                                <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
+                                    <ul>
+                                        <li><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
+                                        <li class="active"><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
+                                        <li><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
+                                        <li><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Utilisateurs</span> </a>
+                                    <ul>
+                                        <li><a href="{{ path('admin_addUser') }}">Ajouter un utilisateur</a></li>
+                                        <li><a href="{{ path('admin_showAllUser') }}">Voir tous les utilisateur</a></li>
+                                        <li><a href="{{ path('admin_validateUser') }}">Valider un utilisateur</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="tab-pane" id="sub_menu">
+                        <nav class="sidebar-nav">
+                            <ul class="main-menu metismenu">
+                                <li>
+                                    <a href="#uiElements" class="has-arrow"><i class="icon-diamond"></i> <span>UI Elements</span></a>
+                                    <ul>
+                                        <li><a href="ui-typography.html">Typography</a></li>
+                                        <li><a href="ui-tabs.html">Tabs</a></li>
+                                        <li><a href="ui-buttons.html">Buttons</a></li>
+                                        <li><a href="ui-bootstrap.html">Bootstrap UI</a></li>
+                                        <li><a href="ui-icons.html">Icons</a></li>
+                                        <li><a href="ui-notifications.html">Notifications</a></li>
+                                        <li><a href="ui-colors.html">Colors</a></li>
+                                        <li><a href="ui-dialogs.html">Dialogs</a></li>
+                                        <li><a href="ui-list-group.html">List Group</a></li>
+                                        <li><a href="ui-media-object.html">Media Object</a></li>
+                                        <li><a href="ui-modals.html">Modals</a></li>
+                                        <li><a href="ui-nestable.html">Nestable</a></li>
+                                        <li><a href="ui-progressbars.html">Progress Bars</a></li>
+                                        <li><a href="ui-range-sliders.html">Range Sliders</a></li>
+                                        <li><a href="ui-treeview.html">Treeview</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#forms" class="has-arrow"><i class="icon-pencil"></i> <span>Forms</span></a>
+                                    <ul>
+                                        <li><a href="forms-validation.html">Form Validation</a></li>
+                                        <li><a href="forms-advanced.html">Advanced Elements</a></li>
+                                        <li><a href="forms-basic.html">Basic Elements</a></li>
+                                        <li><a href="forms-wizard.html">Form Wizard</a></li>
+                                        <li><a href="forms-dragdropupload.html">Drag &amp; Drop Upload</a></li>
+                                        <li><a href="forms-cropping.html">Image Cropping</a></li>
+                                        <li><a href="forms-summernote.html">Summernote</a></li>
+                                        <li><a href="forms-editors.html">CKEditor</a></li>
+                                        <li><a href="forms-markdown.html">Markdown</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#Tables" class="has-arrow"><i class="icon-tag"></i> <span>Tables</span></a>
+                                    <ul>
+                                        <li><a href="table-basic.html">Tables Example<span class="badge badge-info float-right">New</span></a> </li>
+                                        <li><a href="table-normal.html">Normal Tables</a> </li>
+                                        <li><a href="table-jquery-datatable.html">Jquery Datatables</a> </li>
+                                        <li><a href="table-editable.html">Editable Tables</a> </li>
+                                        <li><a href="table-color.html">Tables Color</a> </li>
+                                        <li><a href="table-filter.html">Table Filter <span class="badge badge-info float-right">New</span></a> </li>
+                                        <li><a href="table-dragger.html">Table dragger <span class="badge badge-info float-right">New</span></a> </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#charts" class="has-arrow"><i class="icon-bar-chart"></i> <span>Charts</span></a>
+                                    <ul>
+                                        <li><a href="chart-e.html">E Charts</a> </li>
+                                        <li><a href="chart-morris.html">Morris</a> </li>
+                                        <li><a href="chart-flot.html">Flot</a> </li>
+                                        <li><a href="chart-chartjs.html">ChartJS</a> </li>
+                                        <li><a href="chart-jquery-knob.html">Jquery Knob</a> </li>
+                                        <li><a href="chart-sparkline.html">Sparkline Chart</a></li>
+                                        <li><a href="chart-peity.html">Peity</a></li>
+                                        <li><a href="chart-c3.html">C3 Charts</a></li>
+                                        <li><a href="chart-gauges.html">Gauges</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#Maps" class="has-arrow"><i class="icon-map"></i> <span>Maps</span></a>
+                                    <ul>
+                                        <li><a href="map-google.html">Google Map</a></li>
+                                        <li><a href="map-yandex.html">Yandex Map</a></li>
+                                        <li><a href="map-jvectormap.html">jVector Map</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content">
+            <div class="container-fluid">
+                <div class="block-header">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-8 col-sm-12">
+                            <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Dashboard</h2>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-12 text-right">
+                            <div class="bh_chart hidden-xs">
+                                <div class="float-left m-r-15">
+                                    <small>Visitors</small>
+                                    <h6 class="mb-0 mt-1"><i class="icon-user"></i> 1,784</h6>
+                                </div>
+                                <span class="bh_visitors float-right">2,5,7,8,3,6,7,5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Details</h2>
+                            </div>
+                            <div class="body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover js-basic-example dataTable table-custom">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th class="text-center" colspan="2">Votre ehpad</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <td>{{ user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Adresse</th>
+                                            <td>{{ user.roles[0] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Actif</th>
+                                            <td>{{ user.actif ? 'Validé': 'Non Validé' }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row flex-column">
+                                    <a class="btn btn-success pr-4 pl-4 text-center mr-3 align-self-end" href="{{ path('admin_userEdit', {'id': user.id}) }}">Edit</a>
+{#                                    {{ include('admin/resident/_deleteAdmin_form.html.twig') }}#}
+                                    <a class="ml-3" href="{{ path('admin') }}">Retourner a la liste</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript -->
+
+
+    </body>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
+    <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
+    <script src="{{ asset('bundles/toastr.js') }}" ></script>
+    <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
+    <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/dataTableButton.bundle.js') }}"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
+{% endblock %}
+
+
+{#{% block body %}#}
+{#    <h1>Ehpad</h1>#}
+
+{#    <table class="table">#}
+
+{#    </table>#}
+
+
+
+{#    #}
+{#{% endblock %}#}
