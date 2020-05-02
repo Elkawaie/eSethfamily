@@ -34,7 +34,7 @@ class DefaultController extends AbstractController
      */
     public function test()
     {
-        return $this->render('test.html.twig',[
+        return $this->render('security/test.html.twig',[
             'main' => 'ehpad',
             'child' => 'show'
         ]);
