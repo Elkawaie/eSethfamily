@@ -29,5 +29,15 @@ class DefaultController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/test" ,name="test")
+     */
+    public function test()
+    {
+        return $this->render('test.html.twig',[
+            'main' => 'ehpad',
+            'child' => 'show'
+        ]);
+    }
 
 }
