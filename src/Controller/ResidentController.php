@@ -35,6 +35,8 @@ class ResidentController extends AbstractController
         }
         return $this->render($view, [
             'residents' => $data,
+            'main' => 'resident',
+            'child' => 'show',
         ]);
     }
 
@@ -63,6 +65,8 @@ class ResidentController extends AbstractController
         return $this->render($view, [
             'resident' => $resident,
             'form' => $form->createView(),
+            'main' => 'resident',
+            'child' => 'new',
         ]);
     }
 
@@ -100,7 +104,9 @@ class ResidentController extends AbstractController
 
         }
         return $this->render('admin/resident/setExcel.html.twig',[
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
+            'main' => 'resident',
+            'child' => 'excel',
         ]);
     }
 
@@ -108,7 +114,10 @@ class ResidentController extends AbstractController
      * @Route("/getExcel",name="resident_getExcel")
      */
     public function getExcel(){
-        return $this->render('admin/resident/getExcel.html.twig');
+        return $this->render('admin/resident/getExcel.html.twig', [
+            'main' => 'resident',
+            'child' => 'getexcel',
+        ]);
     }
 
     /**
@@ -122,6 +131,8 @@ class ResidentController extends AbstractController
         }
         return $this->render($view, [
             'resident' => $resident,
+            'main' => 'resident',
+            'child' => 'show',
         ]);
     }
 
@@ -148,6 +159,8 @@ class ResidentController extends AbstractController
         return $this->render($view, [
             'resident' => $resident,
             'form' => $form->createView(),
+            'main' => 'resident',
+            'child' => 'show',
         ]);
     }
 

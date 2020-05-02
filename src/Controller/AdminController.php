@@ -51,7 +51,9 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/user/new.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'main' => 'user',
+            'child' => 'new',
         ]);
     }
 
@@ -64,7 +66,9 @@ class AdminController extends AbstractController
     public function admin_showAllUser(Request $request, UserRepository $userRepository)
     {
         return $this->render('admin/user/index.html.twig',[
-            'users' => $userRepository->findAll()
+            'users' => $userRepository->findAll(),
+            'main' => 'user',
+            'child' => 'show',
         ]);
     }
 
@@ -76,7 +80,9 @@ class AdminController extends AbstractController
     public function admin_validateUser(UserRepository $userRepository)
     {
         return $this->render('admin/user/validate.html.twig',[
-            'users' => $userRepository->findBy(['actif'=>false])
+            'users' => $userRepository->findBy(['actif'=>false]),
+            'main' => 'user',
+            'child' => 'validate',
         ]);
     }
 
@@ -99,7 +105,9 @@ class AdminController extends AbstractController
 
         return $this->render('admin/user/edit.html.twig', [
             'form' => $form->createView(),
-            'user'=>$user
+            'user'=>$user,
+            'main' => 'user',
+            'child' => 'activate',
         ]);
     }
 
@@ -121,6 +129,8 @@ class AdminController extends AbstractController
 
         return $this->render('admin/user/editOne.html.twig', [
             'form' => $form->createView(),
+            'main' => 'user',
+            'child' => 'show',
         ]);
     }
 
@@ -130,7 +140,9 @@ class AdminController extends AbstractController
     public function admin_showUserOne(User $user)
     {
         return $this->render('admin/user/show.html.twig',[
-            'user' => $user
+            'user' => $user,
+            'main' => 'user',
+            'child' => 'show',
         ]);
     }
 }

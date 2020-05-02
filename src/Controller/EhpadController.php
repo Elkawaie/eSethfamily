@@ -29,7 +29,9 @@ class EhpadController extends AbstractController
         }
 
         return $this->render($view, [
-            'ehpads' => $ehpads
+            'ehpads' => $ehpads,
+            'main' => 'ehpad',
+            'child' => 'show',
         ]);
     }
 
@@ -58,6 +60,8 @@ class EhpadController extends AbstractController
 
         return $this->render($view, [
             'ehpad' => $ehpad,
+            'main' => 'ehpad',
+            'child' => 'new',
             'form' => $form->createView(),
         ]);
     }
@@ -74,6 +78,8 @@ class EhpadController extends AbstractController
 
         return $this->render($view, [
             'ehpad' => $ehpad,
+            'main' => 'ehpad',
+            'child' => 'show',
         ]);
     }
 
@@ -100,6 +106,8 @@ class EhpadController extends AbstractController
         return $this->render($view, [
             'ehpad' => $ehpad,
             'form' => $form->createView(),
+            'main' => 'ehpad',
+            'child' => 'show',
         ]);
     }
 

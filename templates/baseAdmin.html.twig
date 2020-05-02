@@ -94,27 +94,28 @@
                     <div class="tab-pane active" id="menu">
                         <nav class="sidebar-nav">
                             <ul class="main-menu metismenu">
+
                                 <li><a href="index.html"><i class="icon-home"></i><span>Dashboard</span></a></li>
                                 <li><a href="app-appointment.html"><i class="icon-calendar"></i>Appointment</a></li>
-                                <li class="active"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Ehpads</span> </a>
+                                <li class="{{ main == 'ehpad' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Ehpads</span> </a>
                                     <ul>
-                                        <li><a href="{{ path('ehpad_new') }}">Ajouter un ehpad</a></li>
-                                        <li class="active"><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
+                                        <li class="{{ child == 'new' ? 'active':''}}"><a href="{{ path('ehpad_new') }}">Ajouter un ehpad</a></li>
+                                        <li class="{{ child == 'show' ? 'active':''}}"><a href="{{ path('ehpad_index') }}">Voir tout les ehpad</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
+                                <li class="{{ main == 'resident' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>
                                     <ul>
-                                        <li><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
-                                        <li><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
-                                        <li><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
-                                        <li><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
+                                        <li class="{{ child == 'new' ? 'active':''}}"><a href="{{ path('resident_new') }}">Ajouter un résident</a></li>
+                                        <li class="{{ child == 'show' ? 'active':''}}"><a href="{{ path('resident_index') }}">Voir tout les résidents</a></li>
+                                        <li class="{{ child == 'excel' ? 'active':''}}"><a href="{{ path('resident_setExcel') }}">Inséré des résidents a partir d'un fichier excel</a></li>
+                                        <li class="{{ child == 'getexcel' ? 'active':''}}"><a href="{{ path('resident_getExcel') }}">Récupéré des résidents</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Utilisateurs</span> </a>
+                                <li class="{{ main == 'user' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Utilisateurs</span> </a>
                                     <ul>
-                                        <li><a href="{{ path('admin_addUser') }}">Ajouter un utilisateur</a></li>
-                                        <li><a href="{{ path('admin_showAllUser') }}">Voir tous les utilisateur</a></li>
-                                        <li><a href="{{ path('admin_validateUser') }}">Valider un utilisateur</a></li>
+                                        <li class="{{ child == 'new' ? 'active':''}}"><a href="{{ path('admin_addUser') }}">Ajouter un utilisateur</a></li>
+                                        <li class="{{ child == 'show' ? 'active':''}}"><a href="{{ path('admin_showAllUser') }}">Voir tous les utilisateur</a></li>
+                                        <li class="{{ child == 'validate' ? 'active':''}}"><a href="{{ path('admin_validateUser') }}">Valider un utilisateur</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -221,6 +222,7 @@
                         </div>
                     </div>
                 </div>
+
         {% block body %}{% endblock %}
             </div>
         </div>

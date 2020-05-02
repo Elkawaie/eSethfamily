@@ -16,4 +16,15 @@ class EmployeController extends AbstractController
             'controller_name' => 'EmployeController',
         ]);
     }
+
+    /**
+     * @Route("/test" ,name="test")
+     */
+    public function test()
+    {
+        return $this->render('test.html.twig',[
+            'main' => 'ehpad',
+            'child' => 'show'
+        ]);
+    }
 }
