@@ -12,8 +12,13 @@ class EmployeController extends AbstractController
      */
     public function index()
     {
+        $employe = $this->getUser();
+        $ehpad = $employe->getEhpad()->getId();
         return $this->render('employe/index.html.twig', [
             'controller_name' => 'EmployeController',
+            'main' =>'nop',
+            'child'=>'nop',
+            'ehpad'=> $ehpad
         ]);
     }
 

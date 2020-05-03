@@ -125,8 +125,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('resident_index');
+            return $this->redirectToRoute('admin_showAllUser');
         }
 
         return $this->render('admin/user/editOne.html.twig', [

@@ -1,0 +1,6 @@
+Nom,Prenom,N°Résident
+Dutronc,Jean-marc,47
+Pascal,Ginette,14
+Jacques,Espee,13
+Salamalikum,Mohamed,12
+Baule,Jean-marc,78

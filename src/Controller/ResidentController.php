@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ehpad;
 use App\Entity\Resident;
 use App\Form\ExcelFormType;
 use App\Form\ResidentAdminType;
@@ -21,23 +22,26 @@ class ResidentController extends AbstractController
     /**
      * @Route("/", name="resident_index", methods={"GET"})
      */
-    public function index(ResidentRepository $residentRepository): Response
+    public function index(ResidentRepository $residentRepository,Request $request): Response
     {
-        if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
-            $view = 'employe/resident/index.html.twig';
-            $data = $residentRepository->findAll();
-        }
+        $params = [
+            'main' => 'resident',
+            'child' => 'show',
+        ];
         $data = $residentRepository->findAll();
         $view = 'resident/index.html.twig';
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
+            $id = $request->get('ehpad');
+            $view = 'employe/resident/index.html.twig';
+            $data = $residentRepository->findBy(['ehpad'=> $id]);
+            $params['ehpad'] = $id;
+        }
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $view = 'admin/resident/index.html.twig';
             $data = $residentRepository->findAll();
         }
-        return $this->render($view, [
-            'residents' => $data,
-            'main' => 'resident',
-            'child' => 'show',
-        ]);
+        $params['residents'] = $data;
+        return $this->render($view, $params);
     }
 
     /**
@@ -45,21 +49,29 @@ class ResidentController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $id = '';
         $resident = new Resident();
         $formType = ResidentType::class;
         $view = 'resident/new.html.twig';
+        $entityManager = $this->getDoctrine()->getManager();
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $formType = ResidentAdminType::class;
             $view = 'admin/resident/new.html.twig';
         }
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
+            $formType = ResidentType::class;
+            $view = 'employe/resident/new.html.twig';
+            $id = $request->get('ehpad');
+            $ehpad = $entityManager->getRepository(Ehpad::class)->find($id);
+            $resident->setEhpad($ehpad);
+        }
         $form = $this->createForm($formType, $resident);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($resident);
             $entityManager->flush();
 
-            return $this->redirectToRoute('resident_index');
+            return $this->redirectToRoute('resident_index', ['ehpad' => $id]);
         }
 
         return $this->render($view, [
@@ -79,35 +91,47 @@ class ResidentController extends AbstractController
     public function setExcel(Request $request, Uploader $uploader){
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
-
+        $params = [
+            'form'=>$form->createView(),
+            'main' => 'resident',
+            'child' => 'excel',
+        ];
         if($form->isSubmitted() && $form->isValid()){
             $file = $form->get('fichier')->getData();
             if($file){
+                $em = $this->getDoctrine()->getManager();
+                if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
+                    $repo = $em->getRepository(Ehpad::class);
+                    $ehpad = $repo->find($request->get('ehpad'));
+                }
+
                 $filename = $uploader->upload($file);
                 $datas = file($uploader->getTargetDirectory().'/'.$filename);
-                $em = $this->getDoctrine()->getManager();
+                dump($datas);
                 for($i = 1; $i < count($datas); $i++ ){
                     $resident_array =  preg_split ("/\,/", $datas[$i]);
                     if($em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]])){
                         $resident = $em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]]);
                     }else{
-                        $resident[] = new Resident();
+                        $resident = new Resident();
+                    }
+                    if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')) {
+                        $resident->setEhpad($ehpad);
                     }
 
-                    $resident[0]->setNom($resident_array[0]);
-                    $resident[0]->setPrenom($resident_array[1]);
-                    $resident[0]->setNumResident($resident_array[2]);
-                    $em->persist($resident[0]);
+                    $resident->setNom($resident_array[0]);
+                    $resident->setPrenom($resident_array[1]);
+                    $resident->setNumResident($resident_array[2]);
+                    dump($resident);
+                    $em->persist($resident);
                     $em->flush();
                 }
             }
-
+            if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
+                $params['ehpad'] = $request->get('ehpad');
+            }
         }
-        return $this->render('admin/resident/setExcel.html.twig',[
-            'form'=>$form->createView(),
-            'main' => 'resident',
-            'child' => 'excel',
-        ]);
+        return $this->render('admin/resident/setExcel.html.twig', $params);
     }
 
     /**

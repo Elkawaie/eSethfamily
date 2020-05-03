@@ -27,4 +27,4 @@ services:
   # please note that last definitions always *replace* previous ones
   App\Service\Uploader:
     arguments:
-      $targetDirectory: '%kernel.cache_dir%/src/uploads/excel_directory'
+      $targetDirectory: '%kernel.project_dir%/src/uploads/excel_directory'
