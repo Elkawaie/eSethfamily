@@ -52,6 +52,30 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    public  function findByFamille_Ehpad($id)
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.fkFamille', 'Famille')
+            ->leftJoin('Famille.resident', 'Resident')
+            ->where('Resident.ehpad = :id')
+            ->setParameter('id', $id)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByUnactif($actif)
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.fkFamille', 'famille')
+            ->where('u.actif = :actif')
+            ->setParameter('actif', $actif)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?User

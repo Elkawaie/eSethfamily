@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Ehpad;
+use App\Entity\Famille;
 use App\Entity\User;
 use App\Form\AdminUserEditType;
 use App\Form\AdminUserType;
 use App\Form\AdminUserValidateType;
+use App\Form\EmployeUserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,9 +43,12 @@ class AdminController extends AbstractController
     public function admin_addUser(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
-        $form = $this->createForm(AdminUserType::class, $user);
-        $form->handleRequest($request);
+        $famille = new Famille();
+        $formType = AdminUserType::class;
         $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm($formType, $user);
+        $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid() ){
             $user->setRoles(array_unique([$form->get('roles')->getData()]));
             $user->setPassword($encoder->encodePassword($user,$form->get('password')->getData()));

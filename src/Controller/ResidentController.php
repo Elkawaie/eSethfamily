@@ -31,7 +31,12 @@ class ResidentController extends AbstractController
         $data = $residentRepository->findAll();
         $view = 'resident/index.html.twig';
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
-            $id = $request->get('ehpad');
+            if($request->get('ehpad') != ''){
+                $id = $request->get('ehpad');
+            }else{
+                $this->addFlash('error', 'Une erreur est survenue merci de bien vouloir ressayé dans quelques minutes');
+                return $this->redirectToRoute('employe');
+            }
             $view = 'employe/resident/index.html.twig';
             $data = $residentRepository->findBy(['ehpad'=> $id]);
             $params['ehpad'] = $id;

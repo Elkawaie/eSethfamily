@@ -22,27 +22,19 @@
                             <tr>
                                 <th>Nom</th>
                                 <th>Prenom</th>
-                                <th>N°Résident</th>
+                                <th>Activé</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Prenom</th>
-                                <th>N°Résident</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
-                            {% for resident in residents %}
+                            {% for user in users %}
                                 <tr>
-                                    <td>{{ resident.nom }}</td>
-                                    <td>{{ resident.prenom }}</td>
-                                    <td>{{ resident.numResident }}</td>
+                                    <td>{{ user.fkFamille.nom }}</td>
+                                    <td>{{ user.fkFamille.prenom }}</td>
+                                    <td>{{ user.actif ? 'Oui': 'Non' }}</td>
                                     <td>
-                                        <a href="{{ path('resident_show', {'id': resident.id}) }}">show</a>
-                                        <a href="{{ path('resident_edit', {'id': resident.id}) }}">edit</a>
+                                        <a href="{{ path('employe_userShowOne', {'id': user.id, 'ehpad': ehpad}) }}">show</a>
+                                        <a href="{{ path('employe_userEditOne', {'id': user.id, 'ehpad': ehpad}) }}">edit</a>
                                     </td>
                                 </tr>
                             {% endfor %}
