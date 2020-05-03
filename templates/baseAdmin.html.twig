@@ -114,10 +114,10 @@
                                 </li>
                                 <li class="{{ main == 'Rdv' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Rendez-vous</span> </a>
                                     <ul>
-                                        <li class="{{ child == 'new' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('resident_new', {'ehpad': ehpad}) }}">Crée un visio</a></li>
-                                        <li class="{{ child == 'show' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('resident_index', {'ehpad': ehpad}) }}">Voir tout les visio</a></li>
-                                        <li class="{{ child == 'excel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('resident_setExcel', {'ehpad': ehpad}) }}">Valider un visio</a></li>
-                                        <li class="{{ child == 'getexcel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('resident_getExcel', {'ehpad': ehpad}) }}">Supprimer un visio</a></li>
+{#                                        <li class="{{ child == 'new' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_new', {'ehpad': ehpad}) }}">Crée un visio</a></li>#}
+{#                                        <li class="{{ child == 'show' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_index', {'ehpad': ehpad}) }}">Voir tout les visio</a></li>#}
+{#                                        <li class="{{ child == 'excel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_validate', {'ehpad': ehpad}) }}">Valider un visio</a></li>#}
+{#                                        <li class="{{ child == 'getexcel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio delete', {'ehpad': ehpad}) }}">Supprimer un visio</a></li>#}
                                     </ul>
                                 </li>
                                 {% if is_granted('ROLE_ADMIN') %}

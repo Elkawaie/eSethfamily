@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Famille;
 use App\Entity\User;
 use App\Form\AdminUserValidateType;
+use App\Form\EmployeEditFamillyType;
 use App\Form\EmployeFamillyType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -82,8 +83,8 @@ class EmployeController extends AbstractController
         $id = $request->get('ehpad');
         $params = [];
         $params['ehpad']= $id;
-        $params['child']= 'nop';
-        $params['main']= 'nop';
+        $params['child']= 'show';
+        $params['main']= 'user';
         $params['users'] =$userRepository->findByFamille_Ehpad($id);
         return $this->render('employe/user/index.html.twig', $params);
     }
@@ -96,8 +97,8 @@ class EmployeController extends AbstractController
         $id = $request->get('ehpad');
         $params = [];
         $params['ehpad']= $id;
-        $params['child']= 'nop';
-        $params['main']= 'nop';
+        $params['child']= 'validate';
+        $params['main']= 'user';
         $params['users'] =$userRepository->findByUnactif(false);
         return $this->render('employe/user/validate.html.twig', $params);
     }
@@ -110,6 +111,7 @@ class EmployeController extends AbstractController
      */
     public function employe_editUser(Request $request, User $user)
     {
+
         $form = $this->createForm(AdminUserValidateType::class, $user);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -137,14 +139,19 @@ class EmployeController extends AbstractController
      */
     public function employe_editUserOne(Request $request, User $user)
     {
-        $form = $this->createForm(AdminUserEditType::class, $user);
+        $famille = $user->getFkFamille();
+        $form = $this->createForm(EmployeEditFamillyType::class, $user, ["famille" =>$famille]);
         $form->handleRequest($request);
+        $id = $request->get('ehpad');
         if ($form->isSubmitted() && $form->isValid()) {
+            $famille->setNom($form->get('nom')->getData());
+            $famille->setPrenom($form->get('nom')->getData());
+            $user->setFkFamille($famille);
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('admin_showAllUser');
+            return $this->redirectToRoute('employe_showAllUser', ['ehpad'=> $id]);
         }
 
-        return $this->render('admin/user/editOne.html.twig', [
+        return $this->render('employe/user/editOne.html.twig', [
             'form' => $form->createView(),
             'main' => 'user',
             'child' => 'show',
