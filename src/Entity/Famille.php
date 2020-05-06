@@ -38,9 +38,18 @@ class Famille
      */
     private $resident;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Visio", mappedBy="participant")
+     */
+    private $visios;
+
+
+
+
     public function __construct()
     {
         $this->resident = new ArrayCollection();
+        $this->visios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,4 +129,34 @@ class Famille
 
         return $this;
     }
+
+    /**
+     * @return Collection|Visio[]
+     */
+    public function getVisios(): Collection
+    {
+        return $this->visios;
+    }
+
+    public function addVisio(Visio $visio): self
+    {
+        if (!$this->visios->contains($visio)) {
+            $this->visios[] = $visio;
+            $visio->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisio(Visio $visio): self
+    {
+        if ($this->visios->contains($visio)) {
+            $this->visios->removeElement($visio);
+            $visio->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+
 }

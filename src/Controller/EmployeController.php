@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Famille;
 use App\Entity\User;
+use App\Entity\Visio;
 use App\Form\AdminUserValidateType;
 use App\Form\EmployeEditFamillyType;
 use App\Form\EmployeFamillyType;
+use App\Repository\EhpadRepository;
 use App\Repository\UserRepository;
+use App\Repository\VisioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -104,6 +107,55 @@ class EmployeController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param VisioRepository $visioRepository
+     * @return Response
+     * @Route("/getVisioUnactif",name="visio_unactif")
+     */
+    public function visio_validate(Request $request, VisioRepository $visioRepository){
+        $ehpad = $request->get('ehpad');
+        $visios = $visioRepository->findVisoByEhpad($ehpad, false);
+        $params = [
+            'main' => 'user',
+            'child' => 'new',
+            'ehpad' => $request->get('ehpad')
+        ];
+        $params['visios'] = $visios;
+
+        return $this->render('employe/visio/validate.html.twig', $params);
+    }
+
+    /**
+     * @Route("/visio/showAll",name="visio_employe_index")
+     * @param VisioRepository $visioRepository
+     * @param Request $request
+     */
+    public function visio_employe_index(VisioRepository $visioRepository, Request $request){
+        $id = $request->get('ehpad');
+        $visios = $visioRepository->findVisoByEhpad($id, true);
+        $params = [
+            'main' => 'user',
+            'child' => 'new',
+            'ehpad' => $request->get('ehpad')
+        ];
+        $params['visios'] = $visios;
+        return $this->render('employe/visio/visioValider.html.twig', $params);
+    }
+    /**
+     * @Route("/validation_visio/{id}", name="visio_validation")
+     * @param Visio $visio
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function visio_validation(Visio $visio, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $visio->setActif(true);
+        $em->persist($visio);
+        $em->flush();
+        return $this->redirectToRoute('visio_unactif', ['ehpad'=> $request->get('ehpad')]);
+    }
+
+    /**
      * @Route("/edit/{id}", name="employe_userEdit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
@@ -173,5 +225,6 @@ class EmployeController extends AbstractController
             'ehpad' => $request->get('ehpad')
         ]);
     }
+
 
 }

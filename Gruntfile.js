@@ -15,6 +15,7 @@ module.exports = function(grunt) {
                         'assets/vendor/css/chartist.min.css',
                         'assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css'
                     ],
+                    'public/css/datepicker.css':'assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.css',
                     'public/css/dataTable.bundle.css': [
                         'assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css',
                         'assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css',
@@ -37,6 +38,9 @@ module.exports = function(grunt) {
                     'public/bundles/vendorscripts.bundle.js': ['assets/vendor/metisMenu/metisMenu.js','assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js','assets/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js','assets/vendor/jquery-sparkline/js/jquery.sparkline.min.js'], /* coman js*/
 
                     'public/bundles/mainscripts.bundle.js':['assets/js/common.js'], /*coman js*/
+
+                    'public/js/datepicker.js':["assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"],
+                    'public/js/inputmask.js':["assets/vendor/jquery-inputmask/jquery.inputmask.bundle.js", "assets/vendor/jquery.maskedinput/jquery.maskedinput.min.js"],
 
                     'public/bundles/dropify.bundle.js': 'assets/vendor/dropify/js/dropify.min.js',
 

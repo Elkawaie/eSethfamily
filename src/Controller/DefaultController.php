@@ -19,6 +19,7 @@ class DefaultController extends AbstractController
                 return $this->redirectToRoute('employe');
                 break;
             case $this->container->get('security.authorization_checker')->isGranted('ROLE_FAMILLE'):
+                dump('ok');
                 return $this->redirectToRoute('famille');
                 break;
             case $this->container->get('security.authorization_checker')->isGranted('ROLE_RESIDENT'):

@@ -29,9 +29,6 @@
 
         <nav class="navbar navbar-fixed-top">
             <div class="container-fluid">
-                <div class="navbar-btn">
-                    <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
-                </div>
 
                 <div class="navbar-brand">
                     <a href="index.html"><img src="{{ asset('images/logo.svg') }}" alt="Lucid Logo" class="img-responsive logo"></a>
@@ -41,23 +38,6 @@
 
                     <div id="navbar-menu">
                         <ul class="nav navbar-nav">
-                            <li>
-                                <a href="doctor-events.html" class="icon-menu d-none d-sm-block d-md-none d-lg-block"><i class="icon-calendar"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown"><i class="icon-equalizer"></i></a>
-                                <ul class="dropdown-menu user-menu menu-icon">
-                                    <li class="menu-heading">ACCOUNT SETTINGS</li>
-                                    <li><a href="javascript:void(0);"><i class="icon-note"></i> <span>Basic</span></a></li>
-                                    <li><a href="javascript:void(0);"><i class="icon-equalizer"></i> <span>Preferences</span></a></li>
-                                    <li><a href="javascript:void(0);"><i class="icon-lock"></i> <span>Privacy</span></a></li>
-                                    <li><a href="javascript:void(0);"><i class="icon-bell"></i> <span>Notifications</span></a></li>
-                                    <li class="menu-heading">BILLING</li>
-                                    <li><a href="javascript:void(0);"><i class="icon-credit-card"></i> <span>Payments</span></a></li>
-                                    <li><a href="javascript:void(0);"><i class="icon-printer"></i> <span>Invoices</span></a></li>
-                                    <li><a href="javascript:void(0);"><i class="icon-refresh"></i> <span>Renewals</span></a></li>
-                                </ul>
-                            </li>
                             <li>
                                 <a href="{{ path('app_logout') }}" class="icon-menu"><i class="icon-login"></i></a>
                             </li>
@@ -70,18 +50,6 @@
         <div id="left-sidebar" class="sidebar">
             <div class="sidebar-scroll">
                 <div class="user-account">
-                    <img src="../assets/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
-                    <div class="dropdown">
-                        <span>Bienvenue,</span>
-                        <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>Dr. Chandler Bing</strong></a>
-                        <ul class="dropdown-menu dropdown-menu-right account">
-                            <li><a href="doctor-profile.html"><i class="icon-user"></i>My Profile</a></li>
-                            <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li>
-                            <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>
-                            <li class="divider"></li>
-                            <li><a href="page-login.html"><i class="icon-power"></i>Logout</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
@@ -115,8 +83,8 @@
                                 <li class="{{ main == 'Rdv' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Rendez-vous</span> </a>
                                     <ul>
 {#                                        <li class="{{ child == 'new' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_new', {'ehpad': ehpad}) }}">Crée un visio</a></li>#}
-{#                                        <li class="{{ child == 'show' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_index', {'ehpad': ehpad}) }}">Voir tout les visio</a></li>#}
-{#                                        <li class="{{ child == 'excel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_validate', {'ehpad': ehpad}) }}">Valider un visio</a></li>#}
+                                        <li class="{{ child == 'show' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_employe_index', {'ehpad': ehpad}) }}">Visio validé</a></li>
+                                        <li class="{{ child == 'excel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_unactif', {'ehpad': ehpad}) }}">Valider un visio</a></li>
 {#                                        <li class="{{ child == 'getexcel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio delete', {'ehpad': ehpad}) }}">Supprimer un visio</a></li>#}
                                     </ul>
                                 </li>
@@ -229,15 +197,6 @@
                                 <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ul>
-                        </div>
-                        <div class="col-lg-6 col-md-4 col-sm-12 text-right">
-                            <div class="bh_chart hidden-xs">
-                                <div class="float-left m-r-15">
-                                    <small>Visitors</small>
-                                    <h6 class="mb-0 mt-1"><i class="icon-user"></i> 1,784</h6>
-                                </div>
-                                <span class="bh_visitors float-right">2,5,7,8,3,6,7,5</span>
-                            </div>
                         </div>
                     </div>
                 </div>

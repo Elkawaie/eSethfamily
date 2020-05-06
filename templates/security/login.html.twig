@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseLogin.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Eseth Familly{% endblock %}
 
 {% block body %}
     <body class="theme-cyan">
@@ -10,14 +10,14 @@
             <div class="vertical-align-middle auth-main">
                 <div class="auth-box">
                     <div class="top">
-                        <img src="{{ asset('images/logo-white.svg') }}" alt="Lucid">
+                        <img src="{{ asset('images/Logo-eSeth-Family-Fond-Blanc.png') }}" alt="Logo eseath Familly">
                     </div>
                     <div class="card">
                         <div class="header">
                             {% if error %}
                                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                             {% endif %}
-                            <p class="lead">Login to your account</p>
+                            <p class="lead">Se connecter</p>
                         </div>
                         {% if app.user %}
                             <div class="mb-3">
@@ -37,7 +37,7 @@
                                 <div class="form-group clearfix">
                                     <label class="fancy-checkbox element-left">
                                         <input type="checkbox" name="_remember_me">
-                                        <span>Remember me</span>
+                                        <span>Se souvenir de moi</span>
                                     </label>
                                 </div>
                                 <input type="hidden" name="_csrf_token"

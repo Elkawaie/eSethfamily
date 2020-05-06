@@ -8,6 +8,7 @@ use App\Form\ExcelFormType;
 use App\Form\ResidentAdminType;
 use App\Form\ResidentType;
 use App\Repository\ResidentRepository;
+use App\Repository\VisioRepository;
 use App\Service\Uploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,9 @@ class ResidentController extends AbstractController
 {
     /**
      * @Route("/", name="resident_index", methods={"GET"})
+     * @param ResidentRepository $residentRepository
+     * @param Request $request
+     * @return Response
      */
     public function index(ResidentRepository $residentRepository,Request $request): Response
     {
@@ -51,6 +55,8 @@ class ResidentController extends AbstractController
 
     /**
      * @Route("/new", name="resident_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -163,6 +169,22 @@ class ResidentController extends AbstractController
             'main' => 'resident',
             'child' => 'show',
         ]);
+    }
+
+    /**
+     * @Route("/resident/Dashboard", name="resident")
+     * @param VisioRepository $visioRepository
+     * @return Response
+     */
+    public function residentDashboard(VisioRepository $visioRepository){
+        $resident = $this->getUser()->getFkResident();
+        $visio = $visioRepository->findVisoByResident($resident->getId());
+        $params = [
+            'main' => 'resident',
+            'child' => 'show',
+        ];
+        $params['visios'] = $visio;
+        return $this->render('resident/dashboard/index.html.twig', $params);
     }
 
     /**

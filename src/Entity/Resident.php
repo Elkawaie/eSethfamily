@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +47,17 @@ class Resident
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $numResident;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Visio", mappedBy="resident")
+     */
+    private $visios;
+
+
+    public function __construct()
+    {
+        $this->visios = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,5 +140,38 @@ class Resident
         $this->numResident = $numResident;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Visio[]
+     */
+    public function getVisios(): Collection
+    {
+        return $this->visios;
+    }
+
+    public function addVisio(Visio $visio): self
+    {
+        if (!$this->visios->contains($visio)) {
+            $this->visios[] = $visio;
+            $visio->addResident($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisio(Visio $visio): self
+    {
+        if ($this->visios->contains($visio)) {
+            $this->visios->removeElement($visio);
+            $visio->removeResident($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 }

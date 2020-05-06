@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseLogin.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Eseth Family!{% endblock %}
 
 {% block body %}
     <body class="theme-cyan">
@@ -10,7 +10,7 @@
             <div class="vertical-align-middle auth-main">
                 <div class="auth-box">
                     <div class="top">
-                        <img src="{{ asset('images/logo-white.svg') }}" alt="Lucid">
+                        <img src="{{ asset('images/Logo-eSeth-Family-Fond-Blanc.pngtext') }}" alt="Lucid">
                     </div>
                     <div class="card">
                         <div class="header">
@@ -25,6 +25,14 @@
                                     <div class="form-group">
                                         <label for="signin-password" class="control-label sr-only">Password</label>
                                         <input type="password" name="password" class="form-control" id="inputPassword signin-password" required placeholder="Votre Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signin-nom" class="control-label sr-only">Nom</label>
+                                        <input type="text" name="nom" class="form-control" id="inputNom signin-nom" required placeholder="Votre Nom">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signin-prenom" class="control-label sr-only">Prenom</label>
+                                        <input type="text" name="prenom" class="form-control" id="inputPrenom signin-prenom" required placeholder="Votre Prenom">
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-lg btn-block">S'inscrire</button>
                                     <div class="bottom">

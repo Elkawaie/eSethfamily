@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Famille;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +52,12 @@ class SecurityController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword($user, $request->request->get('password'))
             );
+            $famille = new Famille();
+            $famille->setNom($request->request->get('nom'));
+            $famille->setPrenom($request->request->get('prenom'));
+            $user->setFkFamille($famille);
+            $user->setActif(false);
+            $user->setRoles(array_unique(['ROLE_FAMILLE']));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

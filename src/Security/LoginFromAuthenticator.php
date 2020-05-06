@@ -68,14 +68,12 @@ class LoginFromAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }elseif ( $user->getActif() === false ){
             throw new CustomUserMessageAuthenticationException('Votre Compte n\'a pas encore était valider' );
         }
-
         return $user;
     }
 
@@ -97,7 +95,6 @@ class LoginFromAuthenticator extends AbstractFormLoginAuthenticator implements P
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
         return new RedirectResponse($this->urlGenerator->generate('defaultLogged'));
     }
 

@@ -3,18 +3,30 @@
 {% block title %}Hello FamilleController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Elkawaie/Desktop/eseath/esethfamilly/src/Controller/FamilleController.php'|file_link(0) }}">src/Controller/FamilleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Elkawaie/Desktop/eseath/esethfamilly/templates/famille/index.html.twig'|file_link(0) }}">templates/famille/index.html.twig</a></code></li>
-    </ul>
+<div class="row clearfix">
+    <div class="col-lg-3 col-md-12">
+    {% if residents is defined %}
+        <h3>Prendre un rendez vous pour:</h3>
+        <ul>
+        {% for resident in residents %}
+            <li><a href="{{ path('visio_new', {'id':resident.id})}}">{{ resident.nom }} {{ resident.prenom }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% if noResident is defined %}
+        <h5>Vous n'êtes ratacher a aucun résident, souhaiter vous en ajouter un ?</h5>
+    {% endif %}
+    </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
+    <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
+    <script src="{{ asset('bundles/toastr.js') }}" ></script>
+    <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
+    <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
 {% endblock %}
