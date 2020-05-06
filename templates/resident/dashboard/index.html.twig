@@ -24,9 +24,7 @@
                     <div class="card-body">
                         <h6 class="card-subtitle"></h6>
                         <p class="card-text">Visio prévu avec {% for participant in visio.participant %} {{ participant.nom }} {% endfor %} le {{ visio.startAt|date('d/m/y') }} à {{ visio.startAt|date('H:i') }}h</p>
-                        {% if date(visio.startAt) >= date('now') and date(visio.endAt) > date('now') and visio.actif == true %}
                         <a href="{{ path('openVisio', {'url': visio.url, 'id': visio.id}) }}" class="card-link">Acceder au visio</a>
-                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
