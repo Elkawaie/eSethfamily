@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DemandeAdd;
 use App\Entity\Ehpad;
 use App\Entity\Famille;
 use App\Entity\User;
@@ -9,10 +10,13 @@ use App\Entity\Visio;
 use App\Form\AdminUserValidateType;
 use App\Form\EmployeEditFamillyType;
 use App\Form\EmployeFamillyType;
+use App\Repository\DemandeAddRepository;
 use App\Repository\EhpadRepository;
+use App\Repository\FamilleRepository;
 use App\Repository\UserRepository;
 use App\Repository\VisioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -128,7 +132,78 @@ class EmployeController extends AbstractController
         return $this->render('employe/visio/validate.html.twig', $params);
     }
 
+    /**
+     * @param Request $request
+     * @param DemandeAddRepository $demandeAddRepository
+     * @return Response
+     * @Route("/show_DemandesEhpad", name="show_DemandesEhpad")
+     */
+    public function show_DemandesEhpad(Request $request, DemandeAddRepository $demandeAddRepository)
+    {
+        $id = $request->get('ehpad');
+        $demandes = $demandeAddRepository->findDemandeByEhpad($id, 'Ehpad');
+        $params = [
+            'main' => 'user',
+            'child' => 'new',
+            'ehpad' => $request->get('ehpad'),
+            'demandes' => $demandes
+        ];
+        return $this->render('employe/demandes/ehpad.html.twig', $params);
+    }
 
+    /**
+     * @param Request $request
+     * @param DemandeAddRepository $demandeAddRepository
+     * @return Response
+     * @Route("/show_DemandesEhpad", name="show_DemandesResident")
+     */
+    public function show_DemandesResident(Request $request, DemandeAddRepository $demandeAddRepository)
+    {
+        $id = $request->get('ehpad');
+        $demandes = $demandeAddRepository->findDemandeByEhpad($id, 'Resident');
+        $params = [
+            'main' => 'user',
+            'child' => 'new',
+            'ehpad' => $request->get('ehpad'),
+            'demandes' => $demandes
+        ];
+        return $this->render('employe/demandes/ehpad.html.twig', $params);
+    }
+
+    /**
+     * @Route("/deleteDemande/{id}", name="deleteDemande")
+     * @param DemandeAdd $demandeAdd
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function deleteDemande(DemandeAdd $demandeAdd, Request $request)
+    {
+        if ($this->isCsrfTokenValid('delete' . $demandeAdd->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($demandeAdd);
+            $entityManager->flush();
+            $this->addFlash('success', 'La demande a bien était supprimer');
+        }
+        return $this->redirectToRoute('employe');
+    }
+
+    /**
+     * @route("/validateDemande/{id}",name="validateDemande")
+     * @param DemandeAdd $demandeAdd
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function validateDemande(DemandeAdd $demandeAdd, Request $request)
+    {
+        if ($this->isCsrfTokenValid('valider' . $demandeAdd->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $demandeAdd->setValidate(true);
+            $entityManager->persist($demandeAdd);
+            $entityManager->flush();
+            $this->addFlash("success", "La demande a bien était validée");
+        }
+        return $this->redirectToRoute('employe');
+    }
 
     /**
      * @Route("/visio/showAll",name="visio_employe_index")
@@ -147,11 +222,12 @@ class EmployeController extends AbstractController
         $params['visios'] = $visios;
         return $this->render('employe/visio/visioValider.html.twig', $params);
     }
+
     /**
      * @Route("/validation_visio/{id}", name="visio_validation")
      * @param Visio $visio
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function visio_validation(Visio $visio, Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -184,7 +260,7 @@ class EmployeController extends AbstractController
      * @Route("/delete/{id}", name="employe_userDelete")
      * @param User $user
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function employe_userDelete(User $user,Request$request){
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
@@ -196,6 +272,7 @@ class EmployeController extends AbstractController
 
         return $this->redirectToRoute('employe');
     }
+
     /**
      * @Route("/editOne/{id}", name="employe_userEditOne", methods={"GET","POST"})
      * @param Request $request
@@ -238,6 +315,5 @@ class EmployeController extends AbstractController
             'ehpad' => $request->get('ehpad')
         ]);
     }
-
 
 }

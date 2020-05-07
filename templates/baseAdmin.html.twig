@@ -104,7 +104,12 @@
                                     </ul>
                                 </li>
                                 {% endif %}
-                                <li class="{{ main == 'Demandes' ? 'active':''}}"> Demandes </li>
+                                <li class="{{ main == 'Demandes' ? 'active':''}}"> <a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Demandes</span> </a>
+                                    <ul>
+                                        <li class="{{ child == 'new' and main == 'resident' ? 'active':''}}"><a href="{{ path('show_DemandesEhpad', {'ehpad': ehpad}) }}">Demandes d'ajout d'ehpad</a></li>
+                                        <li class="{{ child == 'show' and main == 'resident' ? 'active':''}}"><a href="{{ path('show_DemandesResident', {'ehpad': ehpad}) }}">Demandes d'ajout de resident</a></li>
+                                    </ul>
+                                </li>
                             </ul>
 
                         </nav>

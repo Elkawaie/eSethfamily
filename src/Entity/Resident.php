@@ -53,6 +53,11 @@ class Resident
      */
     private $visios;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $num_chambre;
+
 
     public function __construct()
     {
@@ -173,5 +178,17 @@ class Resident
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    public function getNumChambre(): ?string
+    {
+        return $this->num_chambre;
+    }
+
+    public function setNumChambre(string $num_chambre): self
+    {
+        $this->num_chambre = $num_chambre;
+
+        return $this;
     }
 }

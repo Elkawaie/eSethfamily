@@ -133,7 +133,7 @@ class ResidentController extends AbstractController
                     $resident->setNom($resident_array[0]);
                     $resident->setPrenom($resident_array[1]);
                     $resident->setNumResident($resident_array[2]);
-                    dump($resident);
+                    $resident->setNumChambre($resident_array[3]);
                     $em->persist($resident);
                     $em->flush();
                 }

@@ -1,0 +1,70 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dataTables.fixedcolumns.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dataTables.fixedheader.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('sweetalert.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Demande d'ajout d'ehpad</h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-hover js-basic-example dataTable table-custom">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Valider</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for demande in demandes %}
+                                {{ dump(demande) }}
+                                <tr>
+                                    <td>{{ demande.demandeur.nom }}</td>
+                                    <td>{{ demande.demandeur.prenom }}</td>
+                                    <td>{{ demande.validate ? 'Oui': 'Non' }}</td>
+                                    <td>
+                                        <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('deleteDemande', {'id': demande.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette demande ?');">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ demande.id) }}">
+                                            <button class="btn btn-danger">Supprimer</button>
+                                        </form>
+                                        <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('validateDemande', {'id': demande.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir valider cette demande ?');">
+                                            <input type="hidden" name="_method" value="POST">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('valider' ~ demande.id) }}">
+                                            <button class="btn btn-success">Valider</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
+    <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
+    <script src="{{ asset('bundles/toastr.js') }}" ></script>
+    <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
+    <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('bundles/datatablescripts.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/dataTableButton.bundle.js') }}"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
+{% endblock %}

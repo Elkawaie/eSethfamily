@@ -25,6 +25,8 @@ class FamilleController extends AbstractController
 {
     /**
      * @Route("/", name="famille")
+     * @param ResidentRepository $residentRepository
+     * @return Response
      */
     public function index(ResidentRepository $residentRepository)
     {

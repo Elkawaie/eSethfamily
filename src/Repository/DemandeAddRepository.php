@@ -19,22 +19,23 @@ class DemandeAddRepository extends ServiceEntityRepository
         parent::__construct($registry, DemandeAdd::class);
     }
 
-    // /**
-    //  * @return DemandeAdd[] Returns an array of DemandeAdd objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return DemandeAdd[] Returns an array of DemandeAdd objects
+      */
+    public function findDemandeByEhpad($id, $str)
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
+            ->leftJoin('d.demandeur', 'Famille')
+            ->leftJoin('Famille.ehpads', 'Ehpad')
+            ->where('Ehpad = :id')
+            ->andWhere('d.sujet = :str')
+            ->setParameter('id', $id)
+            ->setParameter('str', $str)
             ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?DemandeAdd
