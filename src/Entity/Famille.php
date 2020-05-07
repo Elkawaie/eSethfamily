@@ -43,6 +43,11 @@ class Famille
      */
     private $visios;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ehpad", inversedBy="familles")
+     */
+    private $ehpads;
+
 
 
 
@@ -50,6 +55,7 @@ class Famille
     {
         $this->resident = new ArrayCollection();
         $this->visios = new ArrayCollection();
+        $this->ehpads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,6 +159,32 @@ class Famille
         if ($this->visios->contains($visio)) {
             $this->visios->removeElement($visio);
             $visio->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ehpad[]
+     */
+    public function getEhpads(): Collection
+    {
+        return $this->ehpads;
+    }
+
+    public function addEhpad(ehpad $ehpad): self
+    {
+        if (!$this->ehpads->contains($ehpad)) {
+            $this->ehpads[] = $ehpad;
+        }
+
+        return $this;
+    }
+
+    public function removeEhpad(ehpad $ehpad): self
+    {
+        if ($this->ehpads->contains($ehpad)) {
+            $this->ehpads->removeElement($ehpad);
         }
 
         return $this;

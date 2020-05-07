@@ -8,37 +8,70 @@
     <div id="wrapper">
         <div class="vertical-align-wrap">
             <div class="vertical-align-middle auth-main">
-                <div class="auth-box">
+                <div class="auth-box register-box">
                     <div class="top">
-                        <img src="{{ asset('images/Logo-eSeth-Family-Fond-Blanc.pngtext') }}" alt="Lucid">
+                        <img src="{{ asset('images/Logo-eSeth-Family-Fond-Blanc.png') }}" alt="Lucid">
                     </div>
                     <div class="card">
-                        <div class="header">
-                            <p class="lead">S'inscrire</p>
+                        <div class="header d-flex justify-content-center">
+                            <h3 class="lead">S'inscrire</h3>
                         </div>
                             <div class="body">
-                                <form class="form-auth-small" method="post">
-                                    <div class="form-group">
-                                        <label for="signin-email" class="control-label sr-only">Email</label>
-                                        <input type="email" name="email" class="form-control" id="inputEmail signin-email" required autofocus placeholder="Votre Email">
+{#                                <form class="form-auth-small" method="post">#}
+{#                                    <div class="form-group">#}
+{#                                        <label for="signin-email" class="control-label sr-only">Email</label>#}
+{#                                        <input type="email" name="email" class="form-control" id="inputEmail signin-email" required autofocus placeholder="Votre Email">#}
+{#                                    </div>#}
+{#                                    <div class="form-group">#}
+{#                                        <label for="signin-password" class="control-label sr-only">Password</label>#}
+{#                                        <input type="password" name="password" class="form-control" id="inputPassword signin-password" required placeholder="Votre Password">#}
+{#                                    </div>#}
+{#                                    <div class="form-group">#}
+{#                                        <label for="signin-nom" class="control-label sr-only">Nom</label>#}
+{#                                        <input type="text" name="nom" class="form-control" id="inputNom signin-nom" required placeholder="Votre Nom">#}
+{#                                    </div>#}
+{#                                    <div class="form-group">#}
+{#                                        <label for="signin-prenom" class="control-label sr-only">Prenom</label>#}
+{#                                        <input type="text" name="prenom" class="form-control" id="inputPrenom signin-prenom" required placeholder="Votre Prenom">#}
+{#                                    </div>#}
+
+{#                                </form>#}
+                                {{ form_start(form) }}
+                                <div class="form-row justify-content-between">
+                                    <div class="form-group col-md-6">
+                                        {{ form_label(form.email) }}
+                                        {{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
                                     </div>
-                                    <div class="form-group">
-                                        <label for="signin-password" class="control-label sr-only">Password</label>
-                                        <input type="password" name="password" class="form-control" id="inputPassword signin-password" required placeholder="Votre Password">
+                                    <div class="form-group col-md-6">
+                                        {{ form_label(form.password) }}
+                                        {{ form_widget(form.password,{'attr':{'class':'form-control'}}) }}
                                     </div>
-                                    <div class="form-group">
-                                        <label for="signin-nom" class="control-label sr-only">Nom</label>
-                                        <input type="text" name="nom" class="form-control" id="inputNom signin-nom" required placeholder="Votre Nom">
+                                </div>
+                                <div class="form-row justify-content-between">
+                                    <div class="form-group col-md-6">
+                                        {{ form_label(form.nom) }}
+                                        {{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
                                     </div>
-                                    <div class="form-group">
-                                        <label for="signin-prenom" class="control-label sr-only">Prenom</label>
-                                        <input type="text" name="prenom" class="form-control" id="inputPrenom signin-prenom" required placeholder="Votre Prenom">
+                                    <div class="form-group col-md-6">
+                                        {{ form_label(form.prenom) }}
+                                        {{ form_widget(form.prenom,{'attr':{'class':'form-control'}}) }}
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block">S'inscrire</button>
-                                    <div class="bottom">
-                                        <span><a href="{{ path('app_login') }}">Se connecter</a></span>
-                                    </div>
-                                </form>
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.ehpad) }}
+                                    {{ form_widget(form.ehpad,{'attr':{'class':'form-control'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.commentaire) }}
+                                    {{ form_widget(form.commentaire,{'attr':{'class':'form-control'}}) }}
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">S'inscrire</button>
+
+                                {{ form_end(form) }}
+                                <div class="bottom mt-4">
+                                    <span><a href="{{ path('app_login') }}">Se connecter</a></span>
+                                </div>
                             </div>
                     </div>
                 </div>

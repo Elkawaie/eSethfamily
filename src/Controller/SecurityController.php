@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Famille;
 use App\Entity\User;
+use App\Form\InscriptionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +47,8 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $form = $this->createForm(InscriptionType::class);
+        $form->handleRequest($request);
         if($request->isMethod('POST')){
             $user = new User();
             $user->setEmail($request->request->get('email'));
@@ -64,6 +67,8 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('security/register.html.twig');
+        return $this->render('security/register.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 }

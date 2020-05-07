@@ -38,10 +38,16 @@ class Ehpad
      */
     private $residents;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Famille", mappedBy="ehpads")
+     */
+    private $familles;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->residents = new ArrayCollection();
+        $this->familles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,5 +144,33 @@ class Ehpad
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * @return Collection|Famille[]
+     */
+    public function getFamilles(): Collection
+    {
+        return $this->familles;
+    }
+
+    public function addFamille(Famille $famille): self
+    {
+        if (!$this->familles->contains($famille)) {
+            $this->familles[] = $famille;
+            $famille->addEhpad($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamille(Famille $famille): self
+    {
+        if ($this->familles->contains($famille)) {
+            $this->familles->removeElement($famille);
+            $famille->removeEhpad($this);
+        }
+
+        return $this;
     }
 }
