@@ -118,7 +118,6 @@ class ResidentController extends AbstractController
 
                 $filename = $uploader->upload($file);
                 $datas = file($uploader->getTargetDirectory().'/'.$filename);
-                dump($datas);
                 for($i = 1; $i < count($datas); $i++ ){
                     $resident_array =  preg_split ("/\,/", $datas[$i]);
                     if($em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]])){
@@ -127,14 +126,14 @@ class ResidentController extends AbstractController
                         $resident = new Resident();
                     }
                     if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')) {
-                        $resident->setEhpad($ehpad);
+                        $resident[0]->setEhpad($ehpad);
                     }
-
-                    $resident->setNom($resident_array[0]);
-                    $resident->setPrenom($resident_array[1]);
-                    $resident->setNumResident($resident_array[2]);
-                    $resident->setNumChambre($resident_array[3]);
-                    $em->persist($resident);
+                    $resident[0]->setNom($resident_array[0]);
+                    $resident[0]->setPrenom($resident_array[1]);
+                    $resident[0]->setNumResident($resident_array[2]);
+                    $resident[0]->setNumChambre($resident_array[3]);
+                    dump($resident);
+                    $em->persist($resident[0]);
                     $em->flush();
                 }
             }
