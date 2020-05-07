@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ehpad;
 use App\Entity\Resident;
+use App\Entity\User;
 use App\Form\ExcelFormType;
 use App\Form\ResidentAdminType;
 use App\Form\ResidentType;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/resident")
@@ -56,11 +58,12 @@ class ResidentController extends AbstractController
     /**
      * @Route("/new", name="resident_new", methods={"GET","POST"})
      * @param Request $request
+     * @param UserPasswordEncoderInterface $userPasswordEncoder
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $userPasswordEncoder): Response
     {
-        $id = '';
+        $id='';
         $resident = new Resident();
         $formType = ResidentType::class;
         $view = 'resident/new.html.twig';
@@ -68,6 +71,7 @@ class ResidentController extends AbstractController
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $formType = ResidentAdminType::class;
             $view = 'admin/resident/new.html.twig';
+
         }
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
             $formType = ResidentType::class;
@@ -79,6 +83,16 @@ class ResidentController extends AbstractController
         $form = $this->createForm($formType, $resident);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+                $resident->setEhpad($form->get('ehpad')->getData());
+                $resident->setFamille($form->get('famille')->getData());
+            }
+            $resident->setNumResident($form->get('numResident')->getData());
+            $user = new User();
+            $user->setRoles(array_unique(['ROLE_RESIDENT']));
+            $user->setPassword($userPasswordEncoder->encodePassword($user,'1234567'));
+            $user->setEmail($form->get('nom')->getData().'.'.$form->get('prenom')->getData().'@esethfamily.com');
+            $resident->setUser($user);
             $entityManager->persist($resident);
             $entityManager->flush();
 

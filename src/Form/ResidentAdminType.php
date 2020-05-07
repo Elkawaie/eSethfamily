@@ -19,13 +19,10 @@ class ResidentAdminType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('numResident')
+            ->add('numChambre')
             ->add('famille', EntityType::class, [
                 'class'=> Famille::class,
                 'choice_label' => 'nom'
-            ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label'=>'email'
             ])
             ->add('ehpad', EntityType::class, [
                 'class' => Ehpad::class,

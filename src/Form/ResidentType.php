@@ -15,6 +15,7 @@ class ResidentType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('numResident')
+            ->add('numChambre')
         ;
     }
 
