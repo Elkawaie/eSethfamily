@@ -51,13 +51,15 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($request->isMethod('POST')){
             $user = new User();
-            $user->setEmail($request->request->get('email'));
+            $user->setEmail($form->get('email')->getData());
             $user->setPassword(
-                $passwordEncoder->encodePassword($user, $request->request->get('password'))
+                $passwordEncoder->encodePassword($user, $form->get('password')->getData())
             );
             $famille = new Famille();
-            $famille->setNom($request->request->get('nom'));
-            $famille->setPrenom($request->request->get('prenom'));
+            $famille->setNom($form->get('nom')->getData());
+            $famille->setPrenom($form->get('prenom')->getData());
+            $famille->setCommentaire($form->get('commentaire')->getData());
+            $famille->addEhpad($form->get('ehpad')->getData());
             $user->setFkFamille($famille);
             $user->setActif(false);
             $user->setRoles(array_unique(['ROLE_FAMILLE']));

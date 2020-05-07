@@ -47,14 +47,12 @@
                                     {% endfor %}
                                     <td>{{ visio.actif ? 'Oui': 'Non Validé' }}</td>
                                     <td>
-
-                                            <a href="{{ path('openVisio', {'url': visio.url, 'id': visio.id}) }}">Rejoindre le visio</a>
-                                            <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('visio_delete', {'id': visio.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette ehpad ?');">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ visio.id) }}">
-                                                <button class="btn btn-danger">Delete</button>
-                                            </form>
-
+                                        <a href="{{ path('openVisio', {'url': visio.url, 'id': visio.id}) }}">Rejoindre le visio</a>
+                                        <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('visio_delete', {'id': visio.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette ehpad ?');">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ visio.id) }}">
+                                            <button class="btn btn-danger">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             {% endfor %}

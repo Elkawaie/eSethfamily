@@ -49,9 +49,14 @@ class Famille
     private $ehpads;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $commentaire;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DemandeAdd", mappedBy="demandeur")
+     */
+    private $demandeAdds;
 
 
 
@@ -61,6 +66,7 @@ class Famille
         $this->resident = new ArrayCollection();
         $this->visios = new ArrayCollection();
         $this->ehpads = new ArrayCollection();
+        $this->demandeAdds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,6 +209,37 @@ class Famille
     public function setCommentaire(string $commentaire): self
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DemandeAdd[]
+     */
+    public function getDemandeAdds(): Collection
+    {
+        return $this->demandeAdds;
+    }
+
+    public function addDemandeAdd(DemandeAdd $demandeAdd): self
+    {
+        if (!$this->demandeAdds->contains($demandeAdd)) {
+            $this->demandeAdds[] = $demandeAdd;
+            $demandeAdd->setDemandeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandeAdd(DemandeAdd $demandeAdd): self
+    {
+        if ($this->demandeAdds->contains($demandeAdd)) {
+            $this->demandeAdds->removeElement($demandeAdd);
+            // set the owning side to null (unless already changed)
+            if ($demandeAdd->getDemandeur() === $this) {
+                $demandeAdd->setDemandeur(null);
+            }
+        }
 
         return $this;
     }

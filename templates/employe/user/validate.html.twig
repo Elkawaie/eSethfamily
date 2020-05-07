@@ -23,6 +23,7 @@
                                             <th>Nom</th>
                                             <th>Prenom</th>
                                             <th>Activé</th>
+                                            <th>Commentaire</th>
                                             <th>Actions</th>
                                         </tr>
                                         </thead>
@@ -32,9 +33,18 @@
                                                 <td>{{ user.fkFamille.nom }}</td>
                                                 <td>{{ user.fkFamille.prenom }}</td>
                                                 <td>{{ user.actif ? 'Oui': 'Non' }}</td>
+                                                <td>{{ user.fkFamille.commentaire }}</td>
                                                 <td>
-                                                    <a href="{{ path('employe_userShowOne', {'id': user.id, 'ehpad': ehpad}) }}">show</a>
-                                                    <a href="{{ path('employe_userEdit', {'id': user.id, 'ehpad': ehpad}) }}">edit</a>
+                                                    <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('employe_userEdit', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir valider cet utilisateur ?');">
+                                                        <input type="hidden" name="_method" value="POST">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('valider' ~ user.id) }}">
+                                                        <button class="btn btn-success">Valider</button>
+                                                    </form>
+                                                    <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('employe_userDelete', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cet utilisateur ?');">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                                        <button class="btn btn-danger">Delete</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         {% endfor %}

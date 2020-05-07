@@ -65,12 +65,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ;
     }
 
-    public function findByUnactif($actif)
+    public function findByUnactif($actif, $id)
     {
         return $this->createQueryBuilder('u')
-            ->leftJoin('u.fkFamille', 'famille')
+            ->leftJoin('u.fkFamille', 'Famille')
+            ->leftJoin('Famille.ehpads', 'Ehpad')
             ->where('u.actif = :actif')
+            ->andWhere('Ehpad.id = :id')
             ->setParameter('actif', $actif)
+            ->setParameter('id', $id)
             ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult()

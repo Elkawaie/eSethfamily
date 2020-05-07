@@ -7,7 +7,9 @@ use App\Entity\Visio;
 use App\Form\VisioFormType;
 use App\Repository\VisioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
 
@@ -18,7 +20,7 @@ class VisioController extends AbstractController
 {
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/", name="visio")
      */
     public function index()
@@ -31,7 +33,7 @@ class VisioController extends AbstractController
     /**
      * @Route("/new", name="visio_new")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function visoNew(Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -72,6 +74,8 @@ class VisioController extends AbstractController
 
     /**
      * @param Request $request
+     * @param VisioRepository $visioRepository
+     * @return Response
      * @Route("/openVisio/{url}", name="openVisio")
      */
     public function openVisio(Request $request, VisioRepository $visioRepository)

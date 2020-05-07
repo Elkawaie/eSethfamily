@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ehpad;
 use App\Entity\Famille;
 use App\Entity\User;
 use App\Entity\Visio;
@@ -53,14 +54,15 @@ class EmployeController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm($formType, $user);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid() ){
             $user->setRoles(array_unique(['ROLE_FAMILLE']));
-            $user->setPassword($encoder->encodePassword($user,$form->get('password')->getData()));
+            $user->setPassword($encoder->encodePassword($user, '1234567'));
             $user->setActif(true);
             $famille = new Famille();
             $famille->setNom($form->get('nom')->getData());
             $famille->setPrenom($form->get('nom')->getData());
+            $ehpad = $this->getDoctrine()->getRepository(Ehpad::class)->find($request->get('ehpad'));
+            $famille->addEhpad($ehpad);
             $user->setFkFamille($famille);
             $em->persist($user);
             $em->flush();
@@ -95,6 +97,7 @@ class EmployeController extends AbstractController
     /**
      * @param Request $request
      * @Route("/validateUser", name="employe_validateUser")
+     * @return Response
      */
     public function employe_validateUser(Request $request, UserRepository $userRepository){
         $id = $request->get('ehpad');
@@ -102,7 +105,7 @@ class EmployeController extends AbstractController
         $params['ehpad']= $id;
         $params['child']= 'validate';
         $params['main']= 'user';
-        $params['users'] =$userRepository->findByUnactif(false);
+        $params['users'] =$userRepository->findByUnactif(false, $id);
         return $this->render('employe/user/validate.html.twig', $params);
     }
 
@@ -125,10 +128,13 @@ class EmployeController extends AbstractController
         return $this->render('employe/visio/validate.html.twig', $params);
     }
 
+
+
     /**
      * @Route("/visio/showAll",name="visio_employe_index")
      * @param VisioRepository $visioRepository
      * @param Request $request
+     * @return Response
      */
     public function visio_employe_index(VisioRepository $visioRepository, Request $request){
         $id = $request->get('ehpad');
@@ -163,26 +169,33 @@ class EmployeController extends AbstractController
      */
     public function employe_editUser(Request $request, User $user)
     {
-
-        $form = $this->createForm(AdminUserValidateType::class, $user);
-        $form->handleRequest($request);
-        $em = $this->getDoctrine()->getManager();
-        if($form->isSubmitted() && $form->isValid() ){
-            $em->persist($user);
-            $em->flush();
-            $this->addFlash('success', 'L\'utilidateur a était bien activer');
-            return $this->redirectToRoute('employe_validateUser', ['ehpad'=>$request->get('ehpad')]);
+        if ($this->isCsrfTokenValid('valider' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user->setActif(true);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur a bien était valider');
         }
 
-        return $this->render('admin/user/edit.html.twig', [
-            'form' => $form->createView(),
-            'user'=>$user,
-            'main' => 'user',
-            'child' => 'activate',
-            'ehpad' => $request->get('ehpad')
-        ]);
+        return $this->redirectToRoute('employe');
     }
 
+    /**
+     * @Route("/delete/{id}", name="employe_userDelete")
+     * @param User $user
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function employe_userDelete(User $user,Request$request){
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur a bien était supprimer');
+        }
+
+        return $this->redirectToRoute('employe');
+    }
     /**
      * @Route("/editOne/{id}", name="employe_userEditOne", methods={"GET","POST"})
      * @param Request $request

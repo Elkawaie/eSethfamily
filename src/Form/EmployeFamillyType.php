@@ -16,9 +16,6 @@ class EmployeFamillyType extends AbstractType
             ->add('email', null,[
                 'attr'=> ['class'=> 'form-control email']
             ])
-            ->add('password', PasswordType::class,[
-                'attr'=> ['class'=> 'form-control']
-            ])
             ->add('nom', null, [
                 'attr'=> ['class'=> 'form-control'],
                 'mapped'=> false
