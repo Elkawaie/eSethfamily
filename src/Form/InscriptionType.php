@@ -37,7 +37,7 @@ class InscriptionType extends AbstractType
                 'choice_label' => 'nom'
             ])
             ->add('commentaire', TextareaType::class, [
-                "attr"=> ["placeholder" => "Merci de préciser ici Nom et prenom du résident que vous souhaiter contacter"]
+                "attr"=> ["placeholder" => "Merci de préciser ici, Nom et prenom du résident que vous souhaiter contacter"]
 
             ])
         ;

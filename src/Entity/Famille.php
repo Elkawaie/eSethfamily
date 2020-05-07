@@ -48,6 +48,11 @@ class Famille
      */
     private $ehpads;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $commentaire;
+
 
 
 
@@ -186,6 +191,18 @@ class Famille
         if ($this->ehpads->contains($ehpad)) {
             $this->ehpads->removeElement($ehpad);
         }
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(string $commentaire): self
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }
