@@ -9,6 +9,9 @@ use App\Form\AdminUserEditType;
 use App\Form\AdminUserType;
 use App\Form\AdminUserValidateType;
 use App\Form\EmployeUserType;
+use App\Repository\EhpadRepository;
+use App\Repository\FamilleRepository;
+use App\Repository\ResidentRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +27,28 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/", name="admin")
+     * @param UserRepository $userRepository
+     * @param EhpadRepository $ehpadRepository
+     * @param ResidentRepository $residentRepository
+     * @param FamilleRepository $familleRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(UserRepository $userRepository, EhpadRepository $ehpadRepository, ResidentRepository $residentRepository, FamilleRepository $familleRepository)
     {
+        $comptes = count($userRepository->findBy(['actif'=>false]));
+        $stats = [];
+        $ehpads = count($ehpadRepository->findAll());
+        $residents = count($residentRepository->findAll());
+        $familles = count($familleRepository->findAll());
+        $stats['ehpads'] = $ehpads;
+        $stats['residents'] = $residents;
+        $stats['familles'] = $familles;
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
             'main' => 'nop',
             'child' => 'nop',
+            'comptes' => $comptes,
+            'stats' => $stats
         ]);
     }
 

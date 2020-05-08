@@ -71,6 +71,18 @@ module.exports = function(grunt) {
 
                 }
             }
+        },
+        watch: {
+            js: {
+                files: ['assets/js/*.js'],
+                task : ['uglify'],
+                options: {spawn:false}
+            },
+            css: {
+                files: ['assets/scss/*.scss'],
+                task: ['sass'],
+                options: {spawn:false}
+            }
         }
     });
     grunt.loadNpmTasks("grunt-sass");

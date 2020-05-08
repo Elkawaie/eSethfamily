@@ -22,24 +22,18 @@
                                         <tr>
                                             <th>Nom</th>
                                             <th>Prenom</th>
-                                            <th>N°Résident</th>
+                                            <th>Validé</th>
+                                            <th>Commentaire</th>
                                             <th>Actions</th>
                                         </tr>
                                         </thead>
-                                        <tfoot>
-                                        <tr>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Edit</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                        </tfoot>
                                         <tbody>
                                         {% for user in users %}
                                             <tr>
                                                 <td>{{ user.email }}</td>
                                                 <td>{{ user.roles[0] }}</td>
                                                 <td>{{ user.actif ? 'Yes': 'Non Validé' }}</td>
+                                                <td>{{ user.fkFamille ? user.fkFamille.commentaire  : '' }}</td>
                                                 <td>
                                                     <a href="{{ path('admin_userShowOne', {'id': user.id}) }}">show</a>
                                                     <a href="{{ path('admin_userEdit', {'id': user.id}) }}">edit</a>

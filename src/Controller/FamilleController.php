@@ -25,24 +25,24 @@ class FamilleController extends AbstractController
 {
     /**
      * @Route("/", name="famille")
-     * @param ResidentRepository $residentRepository
+     * @param FamilleRepository $famillerepository
+     * @param Request $request
      * @return Response
      */
-    public function index(ResidentRepository $residentRepository)
+    public function index(FamilleRepository $famillerepository, Request $request)
     {
-        $famille = $this->getUser()->getFkFamille();
-        $resident = $residentRepository->findBy(['famille' => $famille->getId()]);
         $params = [
             'controller_name' => 'FamilleController',
             'main' => 'visio',
             'child' => 'nop'
         ];
-        if ($resident != null) {
-            $params['residents'] = $resident;
-        } else {
-            $params['noResident'] = 'Pas de résident ajoutée';
-        }
-        return $this->render('famille/index.html.twig', $params);
+        $id = $this->getUser()->getFkFamille()->getId();
+        $famille = $famillerepository->findBy(['id' => $id]);
+        $visios = $famille[0]->getVisios();
+        $params['visios'] = $visios->getValues();
+        $params['id'] = $request->get('id');
+
+        return $this->render('famille/visio/showAll.html.twig', $params);
     }
 
     /**
@@ -119,25 +119,26 @@ class FamilleController extends AbstractController
     }
 
     /**
-     * @Route("/visios", name="visios_shows")
+     * @Route("/newVisio", name="visios_shows")
      * @param FamilleRepository $famillerepository
      * @param Request $request
      * @return Response
      */
-    public function getAllVisios(FamilleRepository $famillerepository, Request $request)
+    public function getResident(ResidentRepository $residentRepository , Request $request)
     {
+        $famille = $this->getUser()->getFkFamille();
+        $resident = $residentRepository->findBy(['famille' => $famille->getId()]);
         $params = [
             'controller_name' => 'FamilleController',
             'main' => 'visio',
             'child' => 'nop'
         ];
-        $id = $this->getUser()->getFkFamille()->getId();
-        $famille = $famillerepository->findBy(['id' => $id]);
-        $visios = $famille[0]->getVisios();
-        $params['visios'] = $visios->getValues();
-        $params['id'] = $request->get('id');
-
-        return $this->render('famille/visio/showAll.html.twig', $params);
+        if ($resident != null) {
+            $params['residents'] = $resident;
+        } else {
+            $params['noResident'] = 'Pas de résident ajoutée';
+        }
+        return $this->render('famille/index.html.twig', $params);
     }
 
     /**

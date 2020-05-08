@@ -7,10 +7,40 @@ th.next, th.dow, th.datepicker-switch, td.day{
 div.auth-box div.top img{
   width: 260px !important;
 }
-div.auth-main:after{
-  background: url("../images/fond_login.png") !important;
-}
 
 .register-box{
   width: 470px!important;
+}
+
+.hiddenWrapper{
+  height: 100vh !important;
+  overflow:hidden !important;
+}
+.gridLogin{
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns:1fr% 1fr 1fr;
+  .gridBgColor{
+    grid-row:1;
+    grid-column:1/2 ;
+    background: #191f28;
+    .auth-box{
+      position: relative;
+      top:12%;
+      left:80px;
+    }
+    .links{
+      position: relative;
+      top: 12%;
+      left: 25%;
+    }
+  }
+  .backgroundImg{
+    grid-row:1;
+    grid-column:2/3 ;
+    img{
+      width: 100%;
+      object-fit: cover;
+    }
+  }
 }
