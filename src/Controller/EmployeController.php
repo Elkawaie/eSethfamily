@@ -123,8 +123,8 @@ class EmployeController extends AbstractController
         $ehpad = $request->get('ehpad');
         $visios = $visioRepository->findVisoByEhpad($ehpad, false);
         $params = [
-            'main' => 'user',
-            'child' => 'new',
+            'main' => 'Rdv',
+            'child' => 'unactif',
             'ehpad' => $request->get('ehpad')
         ];
         $params['visios'] = $visios;
@@ -143,8 +143,8 @@ class EmployeController extends AbstractController
         $id = $request->get('ehpad');
         $demandes = $demandeAddRepository->findDemandeByEhpad($id, 'Ehpad');
         $params = [
-            'main' => 'user',
-            'child' => 'new',
+            'main' => 'Demandes',
+            'child' => 'ehpad',
             'ehpad' => $request->get('ehpad'),
             'demandes' => $demandes
         ];
@@ -155,15 +155,15 @@ class EmployeController extends AbstractController
      * @param Request $request
      * @param DemandeAddRepository $demandeAddRepository
      * @return Response
-     * @Route("/show_DemandesEhpad", name="show_DemandesResident")
+     * @Route("/show_DemandesResident", name="show_DemandesResident")
      */
     public function show_DemandesResident(Request $request, DemandeAddRepository $demandeAddRepository)
     {
         $id = $request->get('ehpad');
         $demandes = $demandeAddRepository->findDemandeByEhpad($id, 'Resident');
         $params = [
-            'main' => 'user',
-            'child' => 'new',
+            'main' => 'Demandes',
+            'child' => 'resident',
             'ehpad' => $request->get('ehpad'),
             'demandes' => $demandes
         ];
@@ -215,8 +215,8 @@ class EmployeController extends AbstractController
         $id = $request->get('ehpad');
         $visios = $visioRepository->findVisoByEhpad($id, true);
         $params = [
-            'main' => 'user',
-            'child' => 'new',
+            'main' => 'Rdv',
+            'child' => 'validate',
             'ehpad' => $request->get('ehpad')
         ];
         $params['visios'] = $visios;

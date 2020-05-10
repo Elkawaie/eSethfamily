@@ -23,16 +23,17 @@
                                 <th>Nom</th>
                                 <th>Prenom</th>
                                 <th>Valider</th>
+                                <th>Sujet</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for demande in demandes %}
-                                {{ dump(demande) }}
                                 <tr>
                                     <td>{{ demande.demandeur.nom }}</td>
                                     <td>{{ demande.demandeur.prenom }}</td>
                                     <td>{{ demande.validate ? 'Oui': 'Non' }}</td>
+                                    <td>{{ demande.idSujet }}</td>
                                     <td>
                                         <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('deleteDemande', {'id': demande.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette demande ?');">
                                             <input type="hidden" name="_method" value="DELETE">
