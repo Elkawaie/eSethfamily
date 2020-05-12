@@ -39,8 +39,6 @@ class VisioController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $resident =  $em->getRepository(Resident::class)->find($request->get('id'));
         $participant = $this->getUser()->getFkFamille();
-        dump($resident);
-        dump($participant);
         $visio = new Visio();
         $visio->addResident($resident);
         $visio->setActif(false);

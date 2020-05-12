@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
@@ -31,13 +33,16 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/test" ,name="test")
+     * @param MailerInterface $mailer
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function test()
+    public function test(MailerInterface $mailer)
     {
-        return $this->render('security/test.html.twig',[
-            'main' => 'ehpad',
-            'child' => 'show'
-        ]);
+        $email= (new Email())->from('esethFamilly@contact.com')->to('maximiliendelangle@gmail.com')->subject('mail from app')->text('bite bite')->html('<p>Je t aime</p>');
+
+        $mailer->send($email);
+        return $this->redirectToRoute('login');
     }
 
 }

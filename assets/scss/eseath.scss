@@ -44,3 +44,13 @@ div.auth-box div.top img{
     }
   }
 }
+
+.picker--time{
+  height: 150px !important;
+  overflow: auto !important;
+  cursor: pointer;
+  display:none;
+  .picker__list{
+    list-style: none;
+  }
+}

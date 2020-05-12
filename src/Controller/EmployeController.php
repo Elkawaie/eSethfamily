@@ -5,22 +5,28 @@ namespace App\Controller;
 use App\Entity\DemandeAdd;
 use App\Entity\Ehpad;
 use App\Entity\Famille;
+use App\Entity\HoraireVisio;
 use App\Entity\User;
 use App\Entity\Visio;
 use App\Form\AdminUserValidateType;
 use App\Form\EmployeEditFamillyType;
 use App\Form\EmployeFamillyType;
+use App\Form\HoraireVisioType;
 use App\Repository\DemandeAddRepository;
 use App\Repository\EhpadRepository;
 use App\Repository\FamilleRepository;
 use App\Repository\UserRepository;
 use App\Repository\VisioRepository;
+use App\Service\SuperMailer;
+use DateTime;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Class EmployeController
@@ -100,16 +106,20 @@ class EmployeController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/validateUser", name="employe_validateUser")
+     * @param UserRepository $userRepository
      * @return Response
+     * @Route("/validateUser", name="employe_validateUser")
      */
     public function employe_validateUser(Request $request, UserRepository $userRepository){
         $id = $request->get('ehpad');
+        $user = $userRepository->findByUnactif(false, $id);
         $params = [];
         $params['ehpad']= $id;
         $params['child']= 'validate';
         $params['main']= 'user';
-        $params['users'] =$userRepository->findByUnactif(false, $id);
+        $params['users'] = $user;
+
+
         return $this->render('employe/user/validate.html.twig', $params);
     }
 
@@ -171,6 +181,42 @@ class EmployeController extends AbstractController
     }
 
     /**
+     * @Route("/addHoraireVisio", name="visio_horaire")
+     * @throws \Exception
+     */
+    public function addHoraireVisio(Request $request, EhpadRepository $ehpadRepository){
+        $form = $this->createForm(HoraireVisioType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $horaire = new HoraireVisio();
+            $date = $form->get('date')->getData();
+            $debut = $form->get('debut')->getData();
+            $fin = $form->get('fin')->getData();
+            $date->setTime($debut->format('H'), $debut->format('i'));
+            $date_debut = new DateTime($date->format('y-m-d').' '.$debut->format('H:i'));
+            $date_fin = new DateTime($date->format('y-m-d').' '.$fin->format('H:i'));
+
+            $horaire->setDebut($date_debut);
+            $horaire->setFin($date_fin);
+            $horaire->setEhpad($ehpadRepository->find($this->getUser()->getEhpad()->getId()));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($horaire);
+            $em->flush();
+            $this->addFlash('success', 'L\'horaire pour votre ehpad a était ajoutée avec succés');
+            return $this->redirectToRoute('employe');
+        }
+        $params = [
+            'main' => 'Rdv',
+            'child' => 'horaire',
+            'form' => $form->createView()
+        ];
+
+        return $this->render('employe/visio/horaire.html.twig',$params
+        );
+    }
+
+    /**
      * @Route("/deleteDemande/{id}", name="deleteDemande")
      * @param DemandeAdd $demandeAdd
      * @param Request $request
@@ -227,13 +273,16 @@ class EmployeController extends AbstractController
      * @Route("/validation_visio/{id}", name="visio_validation")
      * @param Visio $visio
      * @param Request $request
+     * @param SuperMailer $mailer
      * @return RedirectResponse
      */
-    public function visio_validation(Visio $visio, Request $request){
+    public function visio_validation(Visio $visio, Request $request, SuperMailer $mailer){
         $em = $this->getDoctrine()->getManager();
         $visio->setActif(true);
         $em->persist($visio);
         $em->flush();
+        $users = $visio->getParticipant()->getValues();
+        $mailer->visioValider($users);
         return $this->redirectToRoute('visio_unactif', ['ehpad'=> $request->get('ehpad')]);
     }
 
@@ -241,9 +290,10 @@ class EmployeController extends AbstractController
      * @Route("/edit/{id}", name="employe_userEdit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param SuperMailer $mailer
+     * @return Response
      */
-    public function employe_editUser(Request $request, User $user)
+    public function employe_editUser(Request $request, User $user, SuperMailer $mailer)
     {
         if ($this->isCsrfTokenValid('valider' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -251,6 +301,9 @@ class EmployeController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a bien était valider');
+            $data = $user->getFkFamille();
+            $mailer->compteValider($user->getEmail());
+
         }
 
         return $this->redirectToRoute('employe');
@@ -277,7 +330,7 @@ class EmployeController extends AbstractController
      * @Route("/editOne/{id}", name="employe_userEditOne", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function employe_editUserOne(Request $request, User $user)
     {

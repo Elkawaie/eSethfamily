@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Famille;
 use App\Entity\User;
 use App\Form\InscriptionType;
+use App\Repository\UserRepository;
+use App\Service\SuperMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,9 +45,11 @@ class SecurityController extends AbstractController
      * @Route("/register", name="app_register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param UserRepository $userRepository
+     * @param SuperMailer $superMailer
      * @return Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository, SuperMailer $superMailer)
     {
         $form = $this->createForm(InscriptionType::class);
         $form->handleRequest($request);
@@ -67,6 +71,9 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'Votre inscription a bien était enregistrer, il est en attente de validation. A son activation vous receverais un email d\'information ');
+            $idEhpad = $form->get('ehpad')->getData()->getId();
+            $emails = $userRepository->findEmailsEmployeByEhpad($idEhpad);
+            $superMailer->nouvelUtilistateurTypeFamille($emails);
             return $this->redirectToRoute('app_login');
         }
 

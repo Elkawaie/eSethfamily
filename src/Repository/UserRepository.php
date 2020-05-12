@@ -65,6 +65,36 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ;
     }
 
+    public function findEmailsEmployeByEhpads($ids){
+
+        return $this->createQueryBuilder('u')
+            ->select('u.email')
+            ->leftJoin('u.ehpad', 'Ehpad')
+            ->where('Ehpad.id IN (:ids)')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('ids', $ids)
+            ->setParameter('role', '%ROLE_EMPLOYE%')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findEmailsEmployeByEhpad($id){
+
+        return $this->createQueryBuilder('u')
+            ->select('u.email')
+            ->leftJoin('u.ehpad', 'Ehpad')
+            ->where('Ehpad.id = :id')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('id', $id)
+            ->setParameter('role', '%ROLE_EMPLOYE%')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findByUnactif($actif, $id)
     {
         return $this->createQueryBuilder('u')

@@ -11,6 +11,7 @@ module.exports = function(grunt) {
                 files: [{
                     'public/css/bootstrap.min.css': 'assets/vendor/bootstrap/css/bootstrap.min.css', /* Bootstrap CSS */
                     'public/css/font-awesome.min.css': 'assets/vendor/font-awesome/css/font-awesome.min.css',
+                    'public/css/pickadate.css': ['assets/js/pickadate/lib/themes/classic.css','assets/js/pickadate/lib/themes/classic.time.css'],
                     'public/css/chartist.min.css': [                                                   /* Chartist css */
                         'assets/vendor/css/chartist.min.css',
                         'assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css'
@@ -36,7 +37,7 @@ module.exports = function(grunt) {
                 files: {
                     'public/bundles/libscripts.bundle.js': ['assets/vendor/jquery/jquery-3.3.1.min.js','assets/vendor/bootstrap/js/popper.min.js','assets/vendor/bootstrap/js/bootstrap.js'], /* main js*/
                     'public/bundles/vendorscripts.bundle.js': ['assets/vendor/metisMenu/metisMenu.js','assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js','assets/vendor/bootstrap-progressbar/js/bootstrap-progressbar.min.js','assets/vendor/jquery-sparkline/js/jquery.sparkline.min.js'], /* coman js*/
-
+                    'public/js/pickadate.js': ['assets/js/pickadate/lib/picker.js', 'assets/js/pickadate/lib/picker.time.js'],
                     'public/bundles/mainscripts.bundle.js':['assets/js/common.js'], /*coman js*/
 
                     'public/js/datepicker.js':["assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"],

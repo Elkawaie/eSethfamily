@@ -83,6 +83,7 @@
                                         <li class="{{ child == 'validate' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_employe_index', {'ehpad': ehpad}) }}">Visio validé</a></li>
                                         <li class="{{ child == 'unactif' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_unactif', {'ehpad': ehpad}) }}">Valider un visio</a></li>
                                         {#                                        <li class="{{ child == 'getexcel' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio delete', {'ehpad': ehpad}) }}">Supprimer un visio</a></li>#}
+                                        <li class="{{ child == 'horaire' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_horaire', {'ehpad': ehpad}) }}">Définir horaire journalier</a></li>
                                     </ul>
                                 </li>
                                 <li class="{{ main == 'resident' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Residents</span> </a>

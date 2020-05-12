@@ -4,6 +4,9 @@
 {% block stylesheet %}
     {{ parent() }}
     <link rel="stylesheet" href="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css" />
+    <link rel="stylesheet" href="{{ asset('css/pickadate.css') }}" />
+
+
 {% endblock %}
 {% block body %}
     <div class="row clearfix">
@@ -16,13 +19,10 @@
             </div>
             <div class="form-group">
                 <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="icon-clock"></i></span>
-                    </div>
-                    {{ form_widget(form.heure, {'attr':{'class': 'form-control time24', 'placeholder':'Ex: 23:59'}}) }}
+                    {{ form_widget(form.heure) }}
                 </div>
             </div>
-            <button class="btn btn-success">{{ button_label|default('Ajouter') }}</button>
+            <button class="btn btn-success mt-5">{{ button_label|default('Ajouter') }}</button>
             {{ form_end(form) }}
         </div>
     </div>
@@ -30,18 +30,38 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
-    <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
-    <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
-    <script src="{{ asset('bundles/toastr.js') }}" ></script>
-    <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
     <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
-    <script src="{{ asset('js/inputmask.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
-
+    <script src="{{ asset('js/pickadate.js') }}"></script>
     <script>
-        $('#visio_form_heure').clockpicker();
+        const picker = $('.timepicker')
+        $(picker).click(function () {
+            $('.picker--time').toggle();
+        })
+        $(document).on('change', '#visio_form_jour', function () {
+            let $field = $(this);
+            let $form = $field.closest('form' )
+            let data = {}
+            data[$field.attr('name')] = $field.val();
+
+            $.post($form.attr('action'), data).then(function (data) {
+
+            })
+        })
+        picker.pickatime({
+            format: 'H:i',
+            min: [8,0],
+            max: [19,0],
+            onOpen: function () {
+                let picker = this;
+                if(picker.get('disable').length === 0){
+                    alert('Veuillez choisir au préalable une date');
+                    picker.set('disable', true)
+                }
+            }
+        })
+
+
     </script>
 {% endblock %}

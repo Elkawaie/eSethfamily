@@ -43,11 +43,17 @@ class Ehpad
      */
     private $familles;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HoraireVisio", mappedBy="ehpad")
+     */
+    private $horaireVisios;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->residents = new ArrayCollection();
         $this->familles = new ArrayCollection();
+        $this->horaireVisios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,6 +175,37 @@ class Ehpad
         if ($this->familles->contains($famille)) {
             $this->familles->removeElement($famille);
             $famille->removeEhpad($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HoraireVisio[]
+     */
+    public function getHoraireVisios(): Collection
+    {
+        return $this->horaireVisios;
+    }
+
+    public function addHoraireVisio(HoraireVisio $horaireVisio): self
+    {
+        if (!$this->horaireVisios->contains($horaireVisio)) {
+            $this->horaireVisios[] = $horaireVisio;
+            $horaireVisio->setEhpad($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoraireVisio(HoraireVisio $horaireVisio): self
+    {
+        if ($this->horaireVisios->contains($horaireVisio)) {
+            $this->horaireVisios->removeElement($horaireVisio);
+            // set the owning side to null (unless already changed)
+            if ($horaireVisio->getEhpad() === $this) {
+                $horaireVisio->setEhpad(null);
+            }
         }
 
         return $this;
