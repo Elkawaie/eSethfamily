@@ -75,6 +75,7 @@
                                     <ul>
                                         <li class="{{ child == 'ehpad' and main == 'Demandes' ? 'active':''}}"><a href="{{ path('show_DemandesEhpad', {'ehpad': ehpad}) }}">Demandes d'ajout d'ehpad</a></li>
                                         <li class="{{ child == 'resident' and main == 'Demandes' ? 'active':''}}"><a href="{{ path('show_DemandesResident', {'ehpad': ehpad}) }}">Demandes d'ajout de resident</a></li>
+                                        <li class="{{ child == 'lier' and main == 'Demandes' ? 'active':''}}"><a href="{{ path('lierResidentFamille', {'ehpad': ehpad}) }}">Lier resident &  Famille</a></li>
                                     </ul>
                                 </li>
                                 <li class="{{ main == 'Rdv' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="fa fa-calendar"></i><span>Rendez-vous</span> </a>

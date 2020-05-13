@@ -12,6 +12,7 @@ use App\Form\AdminUserValidateType;
 use App\Form\EmployeEditFamillyType;
 use App\Form\EmployeFamillyType;
 use App\Form\HoraireVisioType;
+use App\Form\LiaisonType;
 use App\Repository\DemandeAddRepository;
 use App\Repository\EhpadRepository;
 use App\Repository\FamilleRepository;
@@ -50,6 +51,23 @@ class EmployeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/lier", name="lierResidentFamille")
+     */
+    public function lierResidentFamille(Request $request)
+    {
+        $form = $this->createForm(LiaisonType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            dd($form);
+        }
+        return $this->render('employe/demandes/lier.html.twig', [
+            'controller_name' => 'EmployeController',
+            'form' => $form->createView(),
+            'main' =>'Demandes',
+            'child'=>'lier',
+        ]);
+    }
     /**
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
