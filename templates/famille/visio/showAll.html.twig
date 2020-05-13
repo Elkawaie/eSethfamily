@@ -47,7 +47,7 @@
                                     {% endfor %}
                                     <td>{{ visio.actif ? 'Oui': 'Non Validé' }}</td>
                                     <td>
-                                        {% if visio.actif == true and visio.startAt <= date('now', "Europe/Paris") and date('now') < date(visio.endAt) %}
+                                        {% if visio.actif == true and date(visio.startAt) < date('now', 'UTC')|date_modify('+120 minutes') and date(visio.endAt) > date('now', 'UTC')|date_modify('+120 minutes') %}
                                             <a href="{{ path('openVisio', {'url': visio.url, 'id': visio.id}) }}">Rejoindre le visio</a>
                                         {% else %}
                                             <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('visio_delete', {'id': visio.id}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette ehpad ?');">
