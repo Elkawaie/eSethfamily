@@ -17,7 +17,7 @@ class HoraireVisioType extends AbstractType
             ->add('date', DateType::class, [
                 'mapped'=> false,
                 'required'=>false,
-                'format'=> 'dd/mm/yyyy',
+                'format'=> 'yyyy/mm/dd',
                 'widget'=>'single_text',
                 'html5'=>false,
                 'attr'=>[

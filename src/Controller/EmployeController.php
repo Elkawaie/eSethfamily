@@ -182,6 +182,9 @@ class EmployeController extends AbstractController
 
     /**
      * @Route("/addHoraireVisio", name="visio_horaire")
+     * @param Request $request
+     * @param EhpadRepository $ehpadRepository
+     * @return RedirectResponse|Response
      * @throws \Exception
      */
     public function addHoraireVisio(Request $request, EhpadRepository $ehpadRepository){
@@ -190,7 +193,7 @@ class EmployeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $horaire = new HoraireVisio();
-            $date = $form->get('date')->getData();
+            $date = new DateTime($request->request->get('horaire_visio')['date']);
             $debut = $form->get('debut')->getData();
             $fin = $form->get('fin')->getData();
             $date->setTime($debut->format('H'), $debut->format('i'));
@@ -199,7 +202,7 @@ class EmployeController extends AbstractController
 
             $horaire->setDebut($date_debut);
             $horaire->setFin($date_fin);
-            $horaire->setEhpad($ehpadRepository->find($this->getUser()->getEhpad()->getId()));
+            $horaire->setEhpad($ehpadRepository->find($this->getUser()->getEhpad()));
             $em = $this->getDoctrine()->getManager();
             $em->persist($horaire);
             $em->flush();

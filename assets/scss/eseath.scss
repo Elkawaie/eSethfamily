@@ -44,6 +44,9 @@ div.auth-box div.top img{
     }
   }
 }
+.picker__list-item--disabled{
+  display: none !important;
+}
 
 .picker--time{
   height: 150px !important;

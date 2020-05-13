@@ -36,6 +36,9 @@
     <script src="{{ asset('js/pickadate.js') }}"></script>
     <script>
         const picker = $('.timepicker')
+        picker.pickatime({
+            format: 'H:i',
+        })
         $(picker).click(function () {
             $('.picker--time').toggle();
         })
@@ -44,23 +47,52 @@
             let $form = $field.closest('form' )
             let data = {}
             data[$field.attr('name')] = $field.val();
-
             $.post($form.attr('action'), data).then(function (data) {
+                let $pickatime =  $(data).find('.timepicker')
+                let $datas = $($pickatime).attr('data-heure');
+                let $datasSplit = $datas.split(';')
+                let restri = [];
+                let finalRestri;
+                let pickatimePicker = $('.timepicker').pickatime('picker')
+                if($datasSplit.length > 2){
+                    for(let $i = 0; $i < $datasSplit.length; $i++){
+                        if($datasSplit[$i].length !==0){
+                            let str='';
+                            str = $datasSplit[$i];
+                            let heure = '';
+                            heure = str.split("|");
+                            let json = {
+                                from: [
+                                    parseInt(heure[0].split(':')[0],10),
+                                    parseInt(heure[0].split(':')[1],10)
+                                ],
+                                to: [
+                                    parseInt(heure[1].split(':')[0],10),
+                                    parseInt(heure[1].split(':')[1],10)
+                                ]
+                            };
+                            restri.push(json);
+                        }
+                    }
+                    finalRestri = [
+                        { from: restri[0].to, to: restri[1].from }
+                    ]
+                    pickatimePicker.set('min', restri[0].from)
+                    pickatimePicker.set('max', restri[1].to)
+                    pickatimePicker.set('disable', finalRestri)
+                }else{
+                    let str = $datasSplit[0].split('|')
+                    let min = [parseInt(str[0].split(':')[0],10), parseInt(str[0].split(':')[1],10)]
+                    let max = [parseInt(str[1].split(':')[0],10), parseInt(str[1].split(':')[1],10)]
+                    console.log(min)
+                    console.log(max)
+                    pickatimePicker.set('min', min)
+                    pickatimePicker.set('max', max)
+                }
 
             })
         })
-        picker.pickatime({
-            format: 'H:i',
-            min: [8,0],
-            max: [19,0],
-            onOpen: function () {
-                let picker = this;
-                if(picker.get('disable').length === 0){
-                    alert('Veuillez choisir au préalable une date');
-                    picker.set('disable', true)
-                }
-            }
-        })
+
 
 
     </script>

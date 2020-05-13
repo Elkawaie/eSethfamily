@@ -7,6 +7,7 @@ use App\Entity\Visio;
 use App\Form\VisioFormType;
 use App\Repository\VisioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,14 +47,16 @@ class VisioController extends AbstractController
         $form = $this->createForm(VisioFormType::class,$visio);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $date = $form->get('jour')->getData();
-            $minute = $form->get('heure')->getData();
+            $date = new \DateTime($request->request->get('visio_form')['jour']);
+            $minute = new \DateTime();
+            $arrayTime = explode(':', $request->request->get('visio_form')['heure']);
+            $minute->setTime($arrayTime[0], $arrayTime[1]);
             $startDate = new \DateTime();
-            $startDate->setDate((int)$date->format('y'), (int)$date->format('m'), (int)$date->format('d'));
+            $startDate->setDate((int)$date->format('yy'), (int)$date->format('m'), (int)$date->format('d'));
             $startDate->setTime((int)$minute->format('H'), (int)$minute->format('i'));
             $visio->setStartAt($startDate);
             $endDate = new \DateTime();
-            $endDate->setDate((int)$date->format('y'), (int)$date->format('m'), (int)$date->format('d'));
+            $endDate->setDate((int)$date->format('yy'), (int)$date->format('m'), (int)$date->format('d'));
             $endDate->setTime((int)$minute->format('H'), (int)$minute->format('i'));
             $visio->setCreatedAt(new \DateTime('now'));
             $visio->setEndAt($endDate->modify('+60 minutes'));
