@@ -31,10 +31,20 @@
     <script>
         const domain = 'meet.jit.si/{{ visio.url }}';
         const options = {
-            roomName: 'JitsiMeetAPIExample',
+            roomName: 'eSeathVisio',
             width: 700,
             height: 700,
-            parentNode: document.querySelector('#meet')
+            devices: {
+                audioInput: '<deviceLabel>',
+                audioOutput: '<deviceLabel>',
+                videoInput: '<deviceLabel>'
+            },
+            parentNode: document.querySelector('#meet'),
+            interfaceConfigOverwrite: {
+                TOOLBAR_BUTTONS:[
+                    'microphone', 'camera', 'hangup'
+                ]
+            },
         };
         const api = new JitsiMeetExternalAPI(domain,options)
     </script>

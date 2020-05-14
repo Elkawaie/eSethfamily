@@ -35,6 +35,7 @@ class VisioController extends AbstractController
      * @Route("/new", name="visio_new")
      * @param Request $request
      * @return RedirectResponse|Response
+     * @throws \Exception
      */
     public function visoNew(Request $request){
         $em = $this->getDoctrine()->getManager();
