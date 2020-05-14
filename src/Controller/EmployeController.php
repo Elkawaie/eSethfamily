@@ -56,10 +56,18 @@ class EmployeController extends AbstractController
      */
     public function lierResidentFamille(Request $request)
     {
-        $form = $this->createForm(LiaisonType::class);
+        $id = $this->getUser()->getEhpad()->getId();
+        $form = $this->createForm(LiaisonType::class, [$id]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            dd($form);
+            $famille = $form->get('famille')->getData();
+            $resident = $form->get('resident')->getData();
+            $famille->addResident($resident);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($famille);
+            $em->flush();
+            $this->addFlash('success','La liaison a bien était effectué');
+            return $this->redirectToRoute('employe');
         }
         return $this->render('employe/demandes/lier.html.twig', [
             'controller_name' => 'EmployeController',
