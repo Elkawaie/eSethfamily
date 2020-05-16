@@ -41,6 +41,7 @@ module.exports = function(grunt) {
                     'public/bundles/mainscripts.bundle.js':['assets/js/common.js'], /*coman js*/
 
                     'public/js/datepicker.js':["assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"],
+                    'public/js/datepicker.fr.js':["assets/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js"],
                     'public/js/inputmask.js':["assets/vendor/jquery-inputmask/jquery.inputmask.bundle.js", "assets/vendor/jquery.maskedinput/jquery.maskedinput.min.js"],
 
                     'public/bundles/dropify.bundle.js': 'assets/vendor/dropify/js/dropify.min.js',

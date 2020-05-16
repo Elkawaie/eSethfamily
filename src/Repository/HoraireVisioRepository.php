@@ -40,6 +40,20 @@ class HoraireVisioRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByDateAndEhpad($id, $datetime)
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.ehpad', 'Ehpad')
+            ->where('u.debut >= :datetime')
+            ->andWhere('Ehpad.id = :id')
+            ->setParameter('id', $id)
+            ->setParameter('datetime', $datetime)
+            ->orderBy('u.debut', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?HoraireVisio

@@ -47,7 +47,10 @@ div.auth-box div.top img{
 .picker__list-item--disabled{
   display: none !important;
 }
-
+#meet{
+  display: flex;
+  justify-content: center;
+}
 .picker--time{
   height: 150px !important;
   overflow: auto !important;

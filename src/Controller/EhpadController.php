@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ehpad;
+use App\Entity\HoraireVisio;
 use App\Form\EhpadAdminType;
 use App\Form\EhpadType;
 use App\Repository\EhpadRepository;
@@ -112,7 +113,7 @@ class EhpadController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="ehpad_delete", methods={"DELETE"})
+     * @Route("ehpadDelete/{id}", name="ehpad_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Ehpad $ehpad): Response
     {
@@ -124,4 +125,5 @@ class EhpadController extends AbstractController
 
         return $this->redirectToRoute('ehpad_index');
     }
+
 }

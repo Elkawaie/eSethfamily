@@ -71,9 +71,9 @@
                             {% if is_granted('ROLE_FAMILLE') %}
                             <li class="{{ main == 'visio' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-"></i><span>Video conférence</span> </a>
                                 <ul>
-                                    <li class="{{ child == 'addResident' and main == 'visio' ? 'active':''}}"><a href="{{ path('addResident') }}">Assigner un résident</a></li>
-                                    <li class="{{ child == 'addResident' and main == 'visio' ? 'active':''}}"><a href="{{ path('addEhpad') }}">Assigner un ehpad</a></li>
-                                    <li class="{{ child == 'show' and main == 'resident' ? 'active':''}}"><a href="{{ path('visios_shows') }}">Nouveau Rdv visio</a></li>
+                                    <li class="{{ child == 'addResident' and main == 'visio' ? 'active':''}}"><a href="{{ path('addResident') }}">Demande nouvelle affiliation résident</a></li>
+                                    <li class="{{ child == 'addResident' and main == 'visio' ? 'active':''}}"><a href="{{ path('addEhpad') }}">Demande nouvelle affiliation ehpad</a></li>
+                                    <li class="{{ child == 'show' and main == 'resident' ? 'active':''}}"><a href="{{ path('visios_shows') }}">Prise de rendez-vous en visio</a></li>
                                 </ul>
 
                             </li>
@@ -95,10 +95,10 @@
             <div class="block-header">
                 <div class="row">
                     <div class="col-lg-6 col-md-8 col-sm-12">
-                        <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Dashboard</h2>
+                        <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></a> Tableau de Bord</h2>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ path('defaultLogged') }}"><i class="icon-home"></i></a></li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">Tableau de Bord</li>
                         </ul>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                     </div>
                 {% endfor %}
                 {% for message in app.flashes('error') %}
-                    <div class="alert alert-success">
+                    <div class="alert alert-danger">
                         {{ message }}
                     </div>
                 {% endfor %}

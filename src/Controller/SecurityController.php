@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success', 'Votre inscription a bien était enregistrer, il est en attente de validation. A son activation vous receverais un email d\'information ');
+            $this->addFlash('success', 'Votre inscription a bien été enregistrée. Elle est en attente de validation. A son activation, vous recevrez un email d\'information ');
             $idEhpad = $form->get('ehpad')->getData()->getId();
             $emails = $userRepository->findEmailsEmployeByEhpad($idEhpad);
             $superMailer->nouvelUtilistateurTypeFamille($emails);

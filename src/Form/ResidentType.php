@@ -13,9 +13,13 @@ class ResidentType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('prenom')
+            ->add('prenom', null, [
+                'label' => 'Prénom'
+            ])
             ->add('numResident')
-            ->add('numChambre')
+            ->add('numChambre', null, [
+                'label' => 'Numéro de la chambre'
+            ])
         ;
     }
 

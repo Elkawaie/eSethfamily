@@ -17,9 +17,13 @@ class ResidentAdminType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('prenom')
+            ->add('prenom', null, [
+                'label' => 'Prénom'
+            ])
             ->add('numResident')
-            ->add('numChambre')
+            ->add('numChambre', null, [
+                'label' => 'Numéro de la chambre'
+            ])
             ->add('famille', EntityType::class, [
                 'class'=> Famille::class,
                 'choice_label' => 'nom'

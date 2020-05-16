@@ -38,4 +38,5 @@ security:
          - { path: ^/employe, roles: [ROLE_ADMIN, ROLE_EMPLOYE] }
          - { path: ^/resident, roles: [ROLE_RESIDENT, ROLE_EMPLOYE, ROLE_ADMIN] }
          - { path: ^/famille, roles: [ROLE_FAMILLE, ROLE_EMPLOYE, ROLE_ADMIN] }
+         - { path: ^/visio, roles: [ROLE_FAMILLE, ROLE_EMPLOYE, ROLE_ADMIN, ROLE_RESIDENT] }
          - { path: ^/profile, roles: ROLE_USER }

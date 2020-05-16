@@ -16,10 +16,12 @@ use App\Form\LiaisonType;
 use App\Repository\DemandeAddRepository;
 use App\Repository\EhpadRepository;
 use App\Repository\FamilleRepository;
+use App\Repository\HoraireVisioRepository;
 use App\Repository\UserRepository;
 use App\Repository\VisioRepository;
 use App\Service\SuperMailer;
 use DateTime;
+use Exception;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,6 +55,8 @@ class EmployeController extends AbstractController
 
     /**
      * @Route("/lier", name="lierResidentFamille")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function lierResidentFamille(Request $request)
     {
@@ -211,7 +215,7 @@ class EmployeController extends AbstractController
      * @param Request $request
      * @param EhpadRepository $ehpadRepository
      * @return RedirectResponse|Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function addHoraireVisio(Request $request, EhpadRepository $ehpadRepository){
         $form = $this->createForm(HoraireVisioType::class);
@@ -243,6 +247,24 @@ class EmployeController extends AbstractController
 
         return $this->render('employe/visio/horaire.html.twig',$params
         );
+    }
+
+    /**
+     * @Route("/getHoraireVisio", name="visio_getHoraire")
+     * @param HoraireVisioRepository $horaireVisioRepository
+     * @return Response
+     */
+    public function visioGetHoraire(HoraireVisioRepository $horaireVisioRepository){
+
+        $id = $this->getUser()->getEhpad()->getId();
+        $datetime = new DateTime('now');
+        $horaires = $horaireVisioRepository->findByDateAndEhpad($id, $datetime);
+        $params = [
+            'main' => 'Rdv',
+            'child' => 'voir',
+            'horaires' => $horaires
+        ];
+        return $this->render('employe/visio/getHoraire.html.twig', $params);
     }
 
     /**
@@ -396,6 +418,21 @@ class EmployeController extends AbstractController
             'child' => 'show',
             'ehpad' => $request->get('ehpad')
         ]);
+    }
+
+    /**
+     * @param HoraireVisio $horaire
+     * @param Request $request
+     * @Route("horaireDelete/{id}", name="horaire_delete", methods={"DELETE"})
+     * @return RedirectResponse
+     */
+    public function horaireDelete(HoraireVisio $horaire, Request $request){
+        if ($this->isCsrfTokenValid('delete'.$horaire->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($horaire);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('employe');
     }
 
 }

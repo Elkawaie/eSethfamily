@@ -35,7 +35,7 @@ class VisioFormType extends AbstractType
             'mapped'=> false,
             'widget'=>'single_text',
             'html5'=> false,
-            'attr'=>['class'=>"form-control timepicker", 'placeholder'=>"Merci d'indiquer l'heure que vous souhaitez"]
+            'attr'=>['class'=>"form-control timepicker", 'placeholder'=>"Choisissez le moment où vous voulez prendre un rendez-vous"]
         ])
             ->add('jour', DateTimeType::class, [
                 'mapped'=> false,

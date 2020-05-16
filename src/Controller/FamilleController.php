@@ -58,7 +58,7 @@ class FamilleController extends AbstractController
     {
         $form = $this->createFormBuilder()
             ->add('resident', TextareaType::class,[
-                "attr" => ["placeholder"=>"Merci de bien vouloir nous transmettre Nom et Prenom du resident"]
+                "attr" => ["placeholder"=>"Merci de bien vouloir nous transmettre le nom et le prénom du resident"]
             ])->getForm();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
