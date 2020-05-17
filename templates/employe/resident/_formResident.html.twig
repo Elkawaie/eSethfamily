@@ -12,6 +12,10 @@
     {{ form_widget(form.numResident, {'attr':{'class': 'form-control'}}) }}
 </div>
 <div class="form-group">
+    {{ form_label(form.famille) }}
+    {{ form_widget(form.famille, {'attr':{'class': 'custom-select', 'id':'inputGroupSelect01'}}) }}
+</div>
+<div class="form-group">
     {{ form_label(form.numChambre) }}
     {{ form_widget(form.numChambre, {'attr':{'class': 'form-control'}}) }}
 </div>

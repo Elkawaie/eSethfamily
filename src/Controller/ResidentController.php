@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ExcelFormType;
 use App\Form\ResidentAdminType;
 use App\Form\ResidentType;
+use App\Repository\EhpadRepository;
 use App\Repository\ResidentRepository;
 use App\Repository\VisioRepository;
 use App\Service\Uploader;
@@ -40,8 +41,7 @@ class ResidentController extends AbstractController
             if($request->get('ehpad') != ''){
                 $id = $request->get('ehpad');
             }else{
-                $this->addFlash('error', 'Une erreur est survenue merci de bien vouloir ressayé dans quelques minutes');
-                return $this->redirectToRoute('employe');
+                $id = $this->getUser()->getEhpad()->getId();
             }
             $view = 'employe/resident/index.html.twig';
             $data = $residentRepository->findBy(['ehpad'=> $id]);
@@ -111,9 +111,10 @@ class ResidentController extends AbstractController
      * @Route("/setExcel", name="resident_setExcel")
      * @param Request $request
      * @param Uploader $uploader
+     * @param EhpadRepository $ehpadRepository
      * @return Response
      */
-    public function setExcel(Request $request, Uploader $uploader){
+    public function setExcel(Request $request, Uploader $uploader, EhpadRepository $ehpadRepository){
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
         $params = [
@@ -125,29 +126,33 @@ class ResidentController extends AbstractController
             $file = $form->get('fichier')->getData();
             if($file){
                 $em = $this->getDoctrine()->getManager();
-                if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')){
-                    $repo = $em->getRepository(Ehpad::class);
-                    $ehpad = $repo->find($request->get('ehpad'));
-                }
-
                 $filename = $uploader->upload($file);
                 $datas = file($uploader->getTargetDirectory().'/'.$filename);
+                $ehpad = $ehpadRepository->find($request->get('ehpad'));
                 for($i = 1; $i < count($datas); $i++ ){
                     $resident_array =  preg_split ("/\,/", $datas[$i]);
                     if($em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]])){
                         $resident = $em->getRepository(Resident::class)->findBy(['numResident'=> $resident_array[2]]);
+                        if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')) {
+                            $resident[0]->setEhpad($ehpad);
+                            $resident[0]->setNom($resident_array[0]);
+                            $resident[0]->setPrenom($resident_array[1]);
+                            $resident[0]->setNumResident($resident_array[2]);
+                            $resident[0]->setNumChambre($resident_array[3]);
+                        }
+                        $em->persist($resident[0]);
                     }else{
                         $resident = new Resident();
+                        if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')) {
+                            $resident->setEhpad($ehpad);
+                            $resident->setNom($resident_array[0]);
+                            $resident->setPrenom($resident_array[1]);
+                            $resident->setNumResident($resident_array[2]);
+                            $resident->setNumChambre($resident_array[3]);
+                        }
+                        $em->persist($resident);
                     }
-                    if($this->container->get('security.authorization_checker')->isGranted('ROLE_EMPLOYE')) {
-                        $resident[0]->setEhpad($ehpad);
-                    }
-                    $resident[0]->setNom($resident_array[0]);
-                    $resident[0]->setPrenom($resident_array[1]);
-                    $resident[0]->setNumResident($resident_array[2]);
-                    $resident[0]->setNumChambre($resident_array[3]);
-                    dump($resident);
-                    $em->persist($resident[0]);
+
                     $em->flush();
                 }
             }
@@ -210,7 +215,7 @@ class ResidentController extends AbstractController
         $view = 'resident/edit.html.twig';
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $view = 'admin/resident/edit.html.twig';
-        $formtype= ResidentAdminType::class;
+            $formtype= ResidentAdminType::class;
         }
         $form = $this->createForm($formtype, $resident);
         $form->handleRequest($request);

@@ -20,7 +20,9 @@ class ResidentAdminType extends AbstractType
             ->add('prenom', null, [
                 'label' => 'Prénom'
             ])
-            ->add('numResident')
+            ->add('numResident', null , [
+                'label' => 'Numéro du Résident'
+            ])
             ->add('numChambre', null, [
                 'label' => 'Numéro de la chambre'
             ])

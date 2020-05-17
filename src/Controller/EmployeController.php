@@ -175,6 +175,7 @@ class EmployeController extends AbstractController
     /**
      * @param Request $request
      * @param DemandeAddRepository $demandeAddRepository
+     * @param EhpadRepository $ehpadRepository
      * @return Response
      * @Route("/show_DemandesEhpad", name="show_DemandesEhpad")
      */
@@ -200,14 +201,15 @@ class EmployeController extends AbstractController
     public function show_DemandesResident(Request $request, DemandeAddRepository $demandeAddRepository)
     {
         $id = $request->get('ehpad');
-        $demandes = $demandeAddRepository->findDemandeByEhpad($id, 'Resident');
+        $demandes = $demandeAddRepository->findDemandeByEhpadForResident($id, 'Resident');
+        dump($demandes);
         $params = [
             'main' => 'Demandes',
             'child' => 'resident',
             'ehpad' => $request->get('ehpad'),
             'demandes' => $demandes
         ];
-        return $this->render('employe/demandes/ehpad.html.twig', $params);
+        return $this->render('employe/demandes/resident.html.twig', $params);
     }
 
     /**
@@ -268,6 +270,43 @@ class EmployeController extends AbstractController
     }
 
     /**
+     * @Route("/updateHoraire/{id}", name="horaire_update")
+     * @param HoraireVisio $horaireVisio
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function visioUpdate(HoraireVisio $horaireVisio, Request $request)
+    {
+        $form = $this->createForm(HoraireVisioType::class, $horaireVisio);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $date = new DateTime($request->request->get('horaire_visio')['date']);
+            $debut = $form->get('debut')->getData();
+            $fin = $form->get('fin')->getData();
+            $date->setTime($debut->format('H'), $debut->format('i'));
+            $date_debut = new DateTime($date->format('y-m-d').' '.$debut->format('H:i'));
+            $date_fin = new DateTime($date->format('y-m-d').' '.$fin->format('H:i'));
+
+            $horaireVisio->setDebut($date_debut);
+            $horaireVisio->setFin($date_fin);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($horaireVisio);
+            $em->flush();
+            $this->addFlash('success', 'L\'horaire a bien était mis à jour');
+            return $this->redirectToRoute('employe');
+        }
+        $params = [
+            'form'=>$form->createView(),
+            'horaire'=>$horaireVisio,
+            'main' => 'Rdv',
+            'child' => 'voir',
+        ];
+        return $this->render('employe/visio/horaire_update.html.twig', $params);
+
+    }
+
+    /**
      * @Route("/deleteDemande/{id}", name="deleteDemande")
      * @param DemandeAdd $demandeAdd
      * @param Request $request
@@ -290,14 +329,24 @@ class EmployeController extends AbstractController
      * @param Request $request
      * @return RedirectResponse
      */
-    public function validateDemande(DemandeAdd $demandeAdd, Request $request)
+    public function validateDemande(DemandeAdd $demandeAdd, Request $request, FamilleRepository $familleRepository, EhpadRepository $ehpadRepository)
     {
         if ($this->isCsrfTokenValid('valider' . $demandeAdd->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $demandeAdd->setValidate(true);
+            if($demandeAdd->getSujet() === "Ehpad"){
+                $famille = $familleRepository->find($demandeAdd->getDemandeur());
+                $ehpad = $ehpadRepository->find((int)$demandeAdd->getIdSujet());
+                $famille->addEhpad($ehpad);
+                $entityManager->persist($famille);
+                $this->addFlash("success", "La demande a bien était validée");
+            }else{
+                $this->addFlash('success', "Merci de bien vouloir liée le résident et la famille qui en a fait la demande");
+            }
+
             $entityManager->persist($demandeAdd);
             $entityManager->flush();
-            $this->addFlash("success", "La demande a bien était validée");
+
         }
         return $this->redirectToRoute('employe');
     }

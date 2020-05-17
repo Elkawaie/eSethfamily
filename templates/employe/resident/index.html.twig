@@ -23,6 +23,7 @@
                                 <th>Nom</th>
                                 <th>Prenom</th>
                                 <th>N°Résident</th>
+                                <th>N°Chambre</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -31,6 +32,7 @@
                                 <th>Nom</th>
                                 <th>Prenom</th>
                                 <th>N°Résident</th>
+                                <th>N°Chambre</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
@@ -40,6 +42,7 @@
                                     <td>{{ resident.nom }}</td>
                                     <td>{{ resident.prenom }}</td>
                                     <td>{{ resident.numResident }}</td>
+                                    <td>{{ resident.numChambre }}</td>
                                     <td>
                                         <a href="{{ path('resident_show', {'id': resident.id}) }}">show</a>
                                         <a href="{{ path('resident_edit', {'id': resident.id}) }}">edit</a>

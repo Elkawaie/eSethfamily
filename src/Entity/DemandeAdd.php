@@ -36,6 +36,11 @@ class DemandeAdd
      */
     private $idSujet;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $choixEhpadResident;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class DemandeAdd
     public function setIdSujet(string $idSujet): self
     {
         $this->idSujet = $idSujet;
+
+        return $this;
+    }
+
+    public function getChoixEhpadResident(): ?string
+    {
+        return $this->choixEhpadResident;
+    }
+
+    public function setChoixEhpadResident(?string $choixEhpadResident): self
+    {
+        $this->choixEhpadResident = $choixEhpadResident;
 
         return $this;
     }

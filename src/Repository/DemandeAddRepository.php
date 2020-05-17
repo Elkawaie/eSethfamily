@@ -25,10 +25,11 @@ class DemandeAddRepository extends ServiceEntityRepository
     public function findDemandeByEhpad($id, $str)
     {
         return $this->createQueryBuilder('d')
-            ->leftJoin('d.demandeur', 'Famille')
-            ->leftJoin('Famille.ehpads', 'Ehpad')
-            ->where('Ehpad = :id')
+            ->leftJoin('d.demandeur', 'f')
+            ->leftJoin('f.ehpads', 'e')
+            ->where('d.idSujet = :id')
             ->andWhere('d.sujet = :str')
+            ->andWhere('d.validate = false')
             ->setParameter('id', $id)
             ->setParameter('str', $str)
             ->orderBy('d.id', 'ASC')
@@ -36,7 +37,24 @@ class DemandeAddRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
+    /**
+     * @return DemandeAdd[] Returns an array of DemandeAdd objects
+     */
+    public function findDemandeByEhpadForResident($id, $str)
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.demandeur', 'f')
+            ->leftJoin('f.ehpads', 'e')
+            ->where('d.sujet = :str')
+            ->andWhere('d.validate = false')
+            ->andWhere('d.choixEhpadResident = :id')
+            ->setParameter('id', $id)
+            ->setParameter('str', $str)
+            ->orderBy('d.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     /*
     public function findOneBySomeField($value): ?DemandeAdd
     {

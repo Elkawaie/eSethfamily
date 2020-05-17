@@ -24,6 +24,7 @@
                                 <th>Participant</th>
                                 <th>Resident</th>
                                 <th>N° Chambre</th>
+                                <th>N° Résident</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -38,7 +39,8 @@
                                     {% endfor %}
                                     {% for resident in visio.resident %}
                                         <td>{{ resident.nom }} {{ resident.prenom }}</td>
-                                        <td>numéro de la chambre</td>
+                                        <td>{{resident.numChambre}}</td>
+                                        <td>{{resident.numResident}}</td>
                                     {% endfor %}
                                     <td>
                                         <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('visio_delete', {'id': visio.id, 'ehpad': ehpad}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette ehpad ?');">

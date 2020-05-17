@@ -13,7 +13,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="header">
-                    <h2>Liste des rdv validées :</h2>
+                    <h2>Horaires :</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -33,7 +33,7 @@
                                     <td>De {{ horaire.debut|date('H:i') }} h </td>
                                     <td>A {{ horaire.fin|date('H:i') }} h </td>
                                     <td>
-{#                                        <a href="{{ path('horaire_update') }}" class="btn btn-success"></a>#}
+                                        <a  href="{{ path('horaire_update', {'id': horaire.id, 'ehpad': ehpad}) }}" class="btn btn-success ml-3">Update </a>
                                         <form class="mb-5 ml-3 mt-5" method="post" action="{{ path('horaire_delete', {'id': horaire.id, 'ehpad': ehpad}) }}" onsubmit="return confirm('Etes-vous sur de bien vouloir supprimer cette ehpad ?');">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ horaire.id) }}">

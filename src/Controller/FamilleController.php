@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\DemandeAdd;
 use App\Entity\Ehpad;
+use App\Entity\Famille;
 use App\Entity\User;
 use App\Entity\Visio;
+use App\Form\AddResidentType;
 use App\Repository\FamilleRepository;
 use App\Repository\ResidentRepository;
 use App\Repository\UserRepository;
 use App\Service\SuperMailer;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -52,14 +55,20 @@ class FamilleController extends AbstractController
      * @Route("/addResident", name="addResident")
      * @param Request $request
      * @param FamilleRepository $familleRepository
+     * @param SuperMailer $superMailer
+     * @param UserRepository $userRepository
      * @return RedirectResponse|Response
      */
     public function addResident(Request $request, FamilleRepository $familleRepository, SuperMailer $superMailer, UserRepository $userRepository)
     {
-        $form = $this->createFormBuilder()
-            ->add('resident', TextareaType::class,[
-                "attr" => ["placeholder"=>"Merci de bien vouloir nous transmettre le nom et le prénom du resident"]
-            ])->getForm();
+        $ehpads = $this->getUser()->getFkFamille();
+        $famille = $familleRepository->find($this->getUser()->getFkFamille()->getId());
+        $arrayEhpad = $famille->getEhpads()->getValues();
+        $ids = [];
+        foreach ($arrayEhpad as $item) {
+            $ids[] = $item->getId();
+        }
+        $form = $this->createForm(AddResidentType::class, [$ids]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
@@ -68,6 +77,7 @@ class FamilleController extends AbstractController
             $famille = $familleRepository->find($userFkId);
             $demande->setSujet('Resident');
             $demande->setIdSujet($form->get('resident')->getData());
+            $demande->setChoixEhpadResident($form->get('ehpad')->getData()->getId());
             $demande->setDemandeur($famille);
             $demande->setValidate(false);
             $this->addFlash('success', 'Votre demande a bien était prise en compte');
@@ -162,8 +172,6 @@ class FamilleController extends AbstractController
         }
         return $this->render('famille/index.html.twig', $params);
     }
-
-
 
     /**
      * @Route("/{id}", name="visio_delete")

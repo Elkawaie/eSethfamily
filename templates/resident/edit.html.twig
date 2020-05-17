@@ -1,13 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Edit Resident{% endblock %}
+{% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
-    <h1>Edit Resident</h1>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Editer un ehpad</h2>
+                    {{ include('resident/_form.html.twig', {'button_label': 'Update'}) }}
 
-    {{ include('resident/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('resident_index') }}">back to list</a>
-
-    {{ include('resident/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
+    <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
+    <script src="{{ asset('bundles/toastr.js') }}" ></script>
+    <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
+    <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
 {% endblock %}

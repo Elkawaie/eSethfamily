@@ -71,6 +71,7 @@
                                     </ul>
                                 </li>
                                 {% endif %}
+                                {% if is_granted('ROLE_EMPLOYE') %}
                                 <li class="{{ main == 'Demandes' ? 'active':''}}"> <a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Demandes</span> </a>
                                     <ul>
                                         <li class="{{ child == 'ehpad' and main == 'Demandes' ? 'active':''}}"><a href="{{ path('show_DemandesEhpad', {'ehpad': ehpad}) }}">Demandes d'ajout d'ehpad</a></li>
@@ -78,20 +79,25 @@
                                         <li class="{{ child == 'lier' and main == 'Demandes' ? 'active':''}}"><a href="{{ path('lierResidentFamille', {'ehpad': ehpad}) }}">Lier resident &  Famille</a></li>
                                     </ul>
                                 </li>
+                                {% endif %}
                                 <li class="{{ main == 'Rdv' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="fa fa-calendar"></i><span>Rendez-vous</span> </a>
                                     <ul>
                                         <li class="{{ child == 'validate' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_employe_index', {'ehpad': ehpad}) }}">Visio validé</a></li>
                                         <li class="{{ child == 'unactif' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_unactif', {'ehpad': ehpad}) }}">Visios en attente de validation</a></li>
+                                        {% if is_granted('ROLE_EMPLOYE') %}
                                         <li class="{{ child == 'horaire' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_horaire', {'ehpad': ehpad}) }}">Définir horaire journalier</a></li>
-                                        <li class="{{ child == 'voir' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_getHoraire', {'ehpad': ehpad}) }}">Voir les horaires journalier des prochain jour</a></li>
+                                        <li class="{{ child == 'voir' and main == 'Rdv' ? 'active':''}}"><a href="{{ path('visio_getHoraire', {'ehpad': ehpad}) }}">Voir les horaires journalier des prochain jours</a></li>
+                                        {% endif %}
                                     </ul>
                                 </li>
                                 <li class="{{ main == 'resident' ? 'active':''}}"><a href="javascript:void(0);" class="has-arrow"><i class="icon-user-follow"></i><span>Résidents</span> </a>
                                     <ul>
                                         <li class="{{ child == 'new' and main == 'resident' ? 'active':''}}"><a href="{{ path('resident_new', {'ehpad': ehpad}) }}">Ajouter un résident</a></li>
                                         <li class="{{ child == 'show' and main == 'resident' ? 'active':''}}"><a href="{{ path('resident_index', {'ehpad': ehpad}) }}">Voir tous les résidents</a></li>
+                                        {% if is_granted('ROLE_EMPLOYE') %}
                                         <li class="{{ child == 'excel' and main == 'resident' ? 'active':''}}"><a href="{{ path('resident_setExcel', {'ehpad': ehpad}) }}">Insérer des résidents a partir d'un fichier excel</a></li>
                                         <li class="{{ child == 'getexcel' and main == 'resident' ? 'active':''}}"><a href="{{ path('resident_getExcel', {'ehpad': ehpad}) }}">Récupérer des résidents</a></li>
+                                        {% endif %}
                                     </ul>
                                 </li>
                                 {% if is_granted('ROLE_ADMIN') %}
