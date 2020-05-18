@@ -3,7 +3,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css" />
+    <link rel="stylesheet" href="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css"/>
 {% endblock %}
 
 {% block body %}
@@ -38,11 +38,17 @@
     <script src="{{ asset('bundles/chartist.bundle.js') }}"></script>
     <script src="{{ asset('bundles/knob.bundle.js') }}"></script> <!-- Jquery Knob-->
     <script src="{{ asset('bundles/flotscripts.bundle.js') }}"></script> <!-- flot charts Plugin Js -->
-    <script src="{{ asset('bundles/toastr.js') }}" ></script>
+    <script src="{{ asset('bundles/toastr.js') }}"></script>
     <script src="{{ asset('bundles/jquery.flot.selection.js') }}"></script>
     <script src="{{ asset('bundles/mainscripts.bundle.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
     <script src="{{ asset('js/inputmask.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
+    <script src="{{ asset('js/datepicker.fr.js') }}"></script>
+    <script>
+        $( '#horaire_visio_date' ).datepicker( {
+            language: 'fr'
+        } )
+    </script>
 
 {% endblock %}
