@@ -60,11 +60,13 @@
             data['id'] = $id;
             $.post(window.location.origin+'/famille/getDates', data).then(function (data) {
                 let $dates = data.replace("[","").replace("]", "").replace("\"", "").split(', ');
+                console.log($dates)
                 let myDates = [];
                 let array = {};
                 for(let datee of $dates){
-                    array.date = datee.replace("\"", "")
-                    myDates.push(array);
+                    array.date = datee.replace("\"", "");
+                    console.log(array);
+                    myDates['date'].push(array)
                 }
 
                 console.log(myDates);
