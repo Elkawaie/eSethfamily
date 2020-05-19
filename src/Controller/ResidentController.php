@@ -91,7 +91,7 @@ class ResidentController extends AbstractController
             $user = new User();
             $user->setRoles(array_unique(['ROLE_RESIDENT']));
             $user->setPassword($userPasswordEncoder->encodePassword($user,'1234567'));
-            $user->setEmail($form->get('nom')->getData().'.'.$form->get('prenom')->getData().'@esethfamily.com');
+            $user->setEmail(substr($form->get('nom')->getData(),0 , 3).'.'.substr($form->get('prenom')->getData(),0,3).'@esethfamily.com');
             $resident->setUser($user);
             $entityManager->persist($resident);
             $entityManager->flush();
@@ -112,9 +112,10 @@ class ResidentController extends AbstractController
      * @param Request $request
      * @param Uploader $uploader
      * @param EhpadRepository $ehpadRepository
+     * @param UserPasswordEncoderInterface $userPasswordEncoder
      * @return Response
      */
-    public function setExcel(Request $request, Uploader $uploader, EhpadRepository $ehpadRepository){
+    public function setExcel(Request $request, Uploader $uploader, EhpadRepository $ehpadRepository, UserPasswordEncoderInterface $userPasswordEncoder){
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
         $params = [
@@ -149,6 +150,11 @@ class ResidentController extends AbstractController
                             $resident->setPrenom($resident_array[1]);
                             $resident->setNumResident($resident_array[2]);
                             $resident->setNumChambre($resident_array[3]);
+                            $user = new User();
+                            $user->setRoles(array_unique(['ROLE_RESIDENT']));
+                            $user->setPassword($userPasswordEncoder->encodePassword($user,'1234567'));
+                            $user->setEmail(substr($form->get('nom')->getData(),0 , 3).'.'.substr($form->get('prenom')->getData(),0,3).'@esethfamily.com');
+                            $resident->setUser($user);
                         }
                         $em->persist($resident);
                     }

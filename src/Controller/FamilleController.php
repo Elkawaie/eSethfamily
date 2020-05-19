@@ -8,6 +8,7 @@ use App\Entity\Famille;
 use App\Entity\User;
 use App\Entity\Visio;
 use App\Form\AddResidentType;
+use App\Repository\EhpadRepository;
 use App\Repository\FamilleRepository;
 use App\Repository\ResidentRepository;
 use App\Repository\UserRepository;
@@ -17,6 +18,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FamilleController extends AbstractController
 {
     /**
-     * @Route("/", name="famille")
+     * @Route("/")
      * @param FamilleRepository $famillerepository
      * @param Request $request
      * @return Response
@@ -49,6 +51,29 @@ class FamilleController extends AbstractController
         $params['id'] = $request->get('id');
 
         return $this->render('famille/visio/showAll.html.twig', $params);
+    }
+
+    /**
+     * @Route("/getDates", name="getDatesFromFamille")
+     * @param Request $request
+     * @param ResidentRepository $residentRepository
+     * @param EhpadRepository $ehpadRepository
+     */
+    public function getDates(Request $request, ResidentRepository $residentRepository, EhpadRepository $ehpadRepository){
+        $residentId = $residentRepository->find($request->request->get('id'));
+        $ehpadId = $ehpadRepository->find($residentId->getEhpad()->getId());
+        $horaires = $ehpadId->getHoraireVisios()->getValues();
+        $strDates = '';
+        foreach ($horaires as $key => $horaire){
+            dump($key);
+            if($key == 0){
+                $strDates .= $horaire->getDebut()->format('Y-m-d');
+            }else{
+                $strDates .= ', '.$horaire->getDebut()->format('Y-m-d');
+            }
+        }
+        $data = [$strDates];
+        return new JsonResponse(json_encode($data));
     }
 
     /**

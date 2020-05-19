@@ -34,9 +34,46 @@
     <script src="{{ asset('js/pickadate.js') }}"></script>
     <script src="{{ asset('js/datepicker.fr.js') }}"></script>
     <script>
+        let $id = window.location.search.replace("?","").split('=')[1]
+
         $( '.datepicker' ).datepicker( {
-            language: 'fr'
+            language: 'fr',
+            daysOfWeekDisabled: '06',
+            daysOfWeekHighlighted: '06'
         } )
+        $('.datepicker').datepicker().on('show', function () {
+            getDates($id);
+        })
+        function formatDate(d) {
+            let day = String( d.getDate() );
+            //add leading zero if day is is single digit
+            if (day.length === 1)
+                day = '0' + day
+            let month = String( (d.getMonth() + 1) );
+            //add leading zero if month is is single digit
+            if (month.length === 1)
+                month = '0' + month
+            return d.getFullYear() + "-" + month + "-" +day
+        }
+        function getDates($id){
+            let data = {};
+            data['id'] = $id;
+            $.post(window.location.origin+'/famille/getDates', data).then(function (data) {
+                let $dates = data.replace("[","").replace("]", "").replace("\"", "").split(', ');
+                let myDates = [];
+                let array = {};
+                for(let datee of $dates){
+                    array.date = datee.replace("\"", "")
+                    myDates.push(array);
+                }
+
+                console.log(myDates);
+                $('.datepicker').datepicker("setDates", )
+
+                // $('.datepicker-days').replaceWith($('.datepicker-inline .datepicker-days'))
+
+            })
+        }
         const picker = $('.timepicker')
         picker.pickatime({
             format: 'H:i',

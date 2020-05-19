@@ -47,6 +47,10 @@ div.auth-box div.top img{
 .picker__list-item--disabled{
   display: none !important;
 }
+
+.datepicker-days .disabled-date, .datepicker-days .disabled{
+  background: #CDCDCD !important;
+}
 #meet{
   display: flex;
   justify-content: center;
