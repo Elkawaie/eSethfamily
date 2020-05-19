@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block stylesheet %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css" />
-    <link rel="stylesheet" href="{{ asset('css/pickadate.css') }}" />
+    <link rel="stylesheet" href="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css"/>
+    <link rel="stylesheet" href="{{ asset('css/pickadate.css') }}"/>
 
 
 {% endblock %}
@@ -34,16 +34,11 @@
     <script src="{{ asset('js/pickadate.js') }}"></script>
     <script src="{{ asset('js/datepicker.fr.js') }}"></script>
     <script>
-        let $id = window.location.search.replace("?","").split('=')[1]
-
-        $( '.datepicker' ).datepicker( {
-            language: 'fr',
-            daysOfWeekDisabled: '06',
-            daysOfWeekHighlighted: '06'
+        let $id = window.location.search.replace( "?", "" ).split( '=' )[1]
+        $( document ).ready( function () {
+            getDates( $id )
         } )
-        $('.datepicker').datepicker().on('show', function () {
-            getDates($id);
-        })
+
         function formatDate(d) {
             let day = String( d.getDate() );
             //add leading zero if day is is single digit
@@ -53,87 +48,103 @@
             //add leading zero if month is is single digit
             if (month.length === 1)
                 month = '0' + month
-            return d.getFullYear() + "-" + month + "-" +day
+            return  d.getFullYear()+ "-" + month + "-" + day
         }
-        function getDates($id){
+
+        function getDates($id) {
             let data = {};
             data['id'] = $id;
-            $.post(window.location.origin+'/famille/getDates', data).then(function (data) {
-                let $dates = data.replace("[","").replace("]", "").replace("\"", "").split(', ');
-                console.log($dates)
-                let myDates = [];
-                let array = {};
-                for(let datee of $dates){
-                    array.date = datee.replace("\"", "");
-                    console.log(array);
-                    myDates['date'].push(array)
-                }
+            let $dates;
+            $.post( window.location.origin + '/famille/getDates', data ).then( function (data) {
+                $dates = data.replace( "[", "" ).replace( "]", "" ).replace( "\"", "" ).split( ', ' );
 
-                console.log(myDates);
-                $('.datepicker').datepicker("setDates", )
+                $dates[$dates.length - 1] = $dates[$dates.length - 1].replace( "\"", "" );
+                let uniqueDates = [];
+                $.each($dates, function(i, el){
+                    if($.inArray(el, uniqueDates) === -1) uniqueDates.push(el);
+                });
+                console.log(uniqueDates);
+                $( '#visio_form_jour' ).datepicker( {
+                    language: 'fr',
+                    daysOfWeekDisabled: '06',
+                    daysOfWeekHighlighted: '06',
+                    beforeShowDay: function(date){
+                        console.log(uniqueDates.indexOf(formatDate(date)))
+                        if (uniqueDates.indexOf(formatDate(date)) < 0)
 
-                // $('.datepicker-days').replaceWith($('.datepicker-inline .datepicker-days'))
+                            return {
+                                enabled: false
+                            }
+                        else
+                            return {
+                                enabled: true
+                            }
+                    },
+                    formatDate: 'Y/m/d'
 
+                })
             })
         }
-        const picker = $('.timepicker')
-        picker.pickatime({
-            format: 'H:i',
-        })
-        $(picker).click(function () {
-            $('.picker--time').toggle();
-        })
-        $(document).on('change', '#visio_form_jour', function () {
-            let $field = $(this);
-            let $form = $field.closest('form' )
-            let data = {}
-            data[$field.attr('name')] = $field.val();
-            $.post($form.attr('action'), data).then(function (data) {
-                let $pickatime =  $(data).find('.timepicker')
-                let $datas = $($pickatime).attr('data-heure');
-                let $datasSplit = $datas.split(';')
-                let restri = [];
-                let finalRestri;
-                let pickatimePicker = $('.timepicker').pickatime('picker')
-                if($datasSplit.length > 2){
-                    for(let $i = 0; $i < $datasSplit.length; $i++){
-                        if($datasSplit[$i].length !==0){
-                            let str='';
-                            str = $datasSplit[$i];
-                            let heure = '';
-                            heure = str.split("|");
-                            let json = {
-                                from: [
-                                    parseInt(heure[0].split(':')[0],10),
-                                    parseInt(heure[0].split(':')[1],10)
-                                ],
-                                to: [
-                                    parseInt(heure[1].split(':')[0],10),
-                                    parseInt(heure[1].split(':')[1],10)
-                                ]
-                            };
-                            restri.push(json);
+
+
+
+            const picker = $( '.timepicker' )
+            picker.pickatime( {
+                format: 'H:i',
+            } )
+            $( picker ).click( function () {
+                $( '.picker--time' ).toggle();
+            } )
+            $( document ).on( 'change', '#visio_form_jour', function () {
+                let $field = $( this );
+                let $form = $field.closest( 'form' )
+                let data = {}
+                data[$field.attr( 'name' )] = $field.val();
+                $.post( $form.attr( 'action' ), data ).then( function (data) {
+                    let $pickatime = $( data ).find( '.timepicker' )
+                    let $datas = $( $pickatime ).attr( 'data-heure' );
+                    let $datasSplit = $datas.split( ';' )
+                    let restri = [];
+                    let finalRestri;
+                    let pickatimePicker = $( '.timepicker' ).pickatime( 'picker' )
+                    if ($datasSplit.length > 2) {
+                        for (let $i = 0; $i < $datasSplit.length; $i++) {
+                            if ($datasSplit[$i].length !== 0) {
+                                let str = '';
+                                str = $datasSplit[$i];
+                                let heure = '';
+                                heure = str.split( "|" );
+                                let json = {
+                                    from: [
+                                        parseInt( heure[0].split( ':' )[0], 10 ),
+                                        parseInt( heure[0].split( ':' )[1], 10 )
+                                    ],
+                                    to: [
+                                        parseInt( heure[1].split( ':' )[0], 10 ),
+                                        parseInt( heure[1].split( ':' )[1], 10 )
+                                    ]
+                                };
+                                restri.push( json );
+                            }
                         }
+                        finalRestri = [
+                            {from: restri[0].to, to: restri[1].from}
+                        ]
+                        pickatimePicker.set( 'min', restri[0].from )
+                        pickatimePicker.set( 'max', restri[1].to )
+                        pickatimePicker.set( 'disable', finalRestri )
+                    } else {
+                        let str = $datasSplit[0].split( '|' )
+                        let min = [parseInt( str[0].split( ':' )[0], 10 ), parseInt( str[0].split( ':' )[1], 10 )]
+                        let max = [parseInt( str[1].split( ':' )[0], 10 ), parseInt( str[1].split( ':' )[1], 10 )]
+                        console.log( min )
+                        console.log( max )
+                        pickatimePicker.set( 'min', min )
+                        pickatimePicker.set( 'max', max )
                     }
-                    finalRestri = [
-                        { from: restri[0].to, to: restri[1].from }
-                    ]
-                    pickatimePicker.set('min', restri[0].from)
-                    pickatimePicker.set('max', restri[1].to)
-                    pickatimePicker.set('disable', finalRestri)
-                }else{
-                    let str = $datasSplit[0].split('|')
-                    let min = [parseInt(str[0].split(':')[0],10), parseInt(str[0].split(':')[1],10)]
-                    let max = [parseInt(str[1].split(':')[0],10), parseInt(str[1].split(':')[1],10)]
-                    console.log(min)
-                    console.log(max)
-                    pickatimePicker.set('min', min)
-                    pickatimePicker.set('max', max)
-                }
 
-            })
-        })
-
+                } )
+            } )
 
 
     </script>

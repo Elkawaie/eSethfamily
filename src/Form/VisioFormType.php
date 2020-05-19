@@ -43,11 +43,7 @@ class VisioFormType extends AbstractType
                 'format'=> 'yyyy/mm/dd',
                 'widget'=>'single_text',
                 'html5'=>false,
-                'attr'=>['data-provide'=>"datepicker",
-                    'data-date-autoclose'=>"true",
-                    'class'=>"form-control datepicker",
-                    'data-date-format'=>"yyyy/mm/dd"
-                ]
+                'attr'=>['class'=>"form-control"]
             ])
         ;
         $builder->get('jour')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event){
