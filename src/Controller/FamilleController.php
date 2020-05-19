@@ -44,8 +44,9 @@ class FamilleController extends AbstractController
             'main' => 'visio',
             'child' => 'nop'
         ];
-        $id = $this->getUser()->getFkFamille()->getId();
-        $famille = $famillerepository->findBy(['id' => $id]);
+        $id = $this->getUser()->getFkFamille();
+        dump($id);
+        $famille = $famillerepository->findBy(['id' => $id->getId()]);
         $visios = $famille[0]->getVisios();
         $params['visios'] = $visios->getValues();
         $params['id'] = $request->get('id');
