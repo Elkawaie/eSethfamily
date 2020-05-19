@@ -32,7 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FamilleController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="famille")
      * @param FamilleRepository $famillerepository
      * @param Request $request
      * @return Response
