@@ -19,6 +19,7 @@ DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
     # project in a subdirectory, the base path will be prepended to allow proper
@@ -28,7 +29,6 @@ DirectoryIndex index.php
     # the following 2 lines to eliminate the overhead.
     RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
     RewriteRule ^(.*) - [E=BASE:%1]
-
 
     # Sets the HTTP_AUTHORIZATION header removed by Apache
     RewriteCond %{HTTP:Authorization} .
