@@ -20,6 +20,7 @@ div.auth-box div.top img{
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns:1fr% 1fr 1fr;
+  height: 100%;
   .gridBgColor{
     grid-row:1;
     grid-column:1/2 ;
@@ -40,6 +41,7 @@ div.auth-box div.top img{
     grid-column:2/3 ;
     img{
       width: 100%;
+      height: 100%;
       object-fit: cover;
     }
   }
