@@ -1,2 +1,8 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^(www.)?esethfamily.com$
 RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ /public/$1 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /public/$1
+RewriteCond %{HTTP_HOST} ^(www.)?esethfamily.com$
+RewriteRule ^(/)?$ public/index.php [L]
