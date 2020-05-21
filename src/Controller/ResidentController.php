@@ -153,8 +153,9 @@ class ResidentController extends AbstractController
                             $user = new User();
                             $user->setRoles(array_unique(['ROLE_RESIDENT']));
                             $user->setPassword($userPasswordEncoder->encodePassword($user,'1234567'));
-                            $user->setEmail(substr($form->get('nom')->getData(),0 , 3).'.'.substr($form->get('prenom')->getData(),0,3).'@esethfamily.com');
+                            $user->setEmail(substr($resident_array[0],0 , 4).'.'.substr($resident_array[1],0,4).'@eseth.com');
                             $resident->setUser($user);
+                            $em->persist($user);
                         }
                         $em->persist($resident);
                     }
