@@ -152,8 +152,9 @@ class ResidentController extends AbstractController
                             $resident->setNumChambre($resident_array[3]);
                             $user = new User();
                             $user->setRoles(array_unique(['ROLE_RESIDENT']));
+                            $user->setActif(true);
                             $user->setPassword($userPasswordEncoder->encodePassword($user,'1234567'));
-                            $user->setEmail(substr($resident_array[0],0 , 4).'.'.substr($resident_array[1],0,4).'@eseth.com');
+                            $user->setEmail(strtolower(substr($resident_array[0],0 , 4)).'.'.substr($resident_array[1],0,4).'@eseth.com');
                             $resident->setUser($user);
                             $em->persist($user);
                         }
