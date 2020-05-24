@@ -33,6 +33,22 @@ class SuperMailer
 
         }
 
+        public function formulaireContact(array $emails, string $from, string $subject, string $nom, string $prenom, string $message){
+            $employe = [];
+            foreach ($emails as $email){
+                array_push($employe, $email["email"]);
+            }
+            $email = (new Email())
+                ->from($from)
+                ->to(...$employe)
+                ->subject($subject)
+                ->html("<h3> Mr ou Mme ".$nom." ".$prenom." vous à adresser ce message </h3><br><br><p>".$message."</p>");
+            try {
+                $this->mailer->send($email);
+            } catch (TransportExceptionInterface $e) {
+            }
+        }
+
         public function compteValider($mail){
             $email = (new Email())
                 ->from('eSeathFamily@contact.fr')

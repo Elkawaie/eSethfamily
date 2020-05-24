@@ -23,9 +23,12 @@
                             <p class="lead">Se connecter</p>
                         </div>
                         {% if app.user %}
-                            <div class="mb-3">
-                                You are logged in as {{ app.user.username }}, <a
-                                        href="{{ path('app_logout') }}">Logout</a>
+                            <div class="row m-3 flex-column">
+                                <p>
+                                    Bonjour: {{ app.user.username }}
+                                </p>
+                                <a class="btn btn-danger mb-1" href="{{ path('app_logout') }}">Logout</a>
+                                <a class ="btn btn-success" href="{{ path('defaultLogged') }}">Rejoindre mon espace</a>
                             </div>
                         {% else %}
                             <div class="body">
@@ -63,7 +66,7 @@
                 </div>
                 <div class="row flex-column links">
                     <a class="text-white text-center" href="eSethFamily">eSethFamily</a>
-                    <a class="text-white text-center" href="">Nous Contacter</a>
+                    <a class="text-white text-center" href="{{ path('contact') }}">Nous Contacter</a>
                     <a class="text-white text-center" href="">Mentions légales</a>
                     <a class="text-white text-center" href="">Données personnelles</a>
                 </div>

@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\ContactEhpadType;
+use App\Repository\UserRepository;
+use App\Service\SuperMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,17 +37,33 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/test" ,name="test")
-     * @param MailerInterface $mailer
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @Route("/contact" ,name="contact")
+     * @param SuperMailer $superMailer
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
      */
-    public function test(MailerInterface $mailer)
+    public function contact(SuperMailer $superMailer, Request $request, UserRepository $userRepository)
     {
-        $email= (new Email())->from('esethFamilly@contact.com')->to('maximiliendelangle@gmail.com')->subject('mail from app')->text('bite bite')->html('<p>Je t aime</p>');
+        $form = $this->createForm(ContactEhpadType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $emails = $userRepository->findEmailsEmployeByEhpads([$form->get('ehpad')->getData()->getId()]);
+            $superMailer->formulaireContact(
+                $emails,
+                (string)$form->get('email')->getData(),
+                (string)$form->get('sujet')->getData(),
+                (string)$form->get('nom')->getData(),
+                (string)$form->get('prenom')->getData(),
+                (string)$form->get('message')->getData()
+            );
+            $this->addFlash('success', 'Votre message a bien était envoyé');
+            return $this->redirectToRoute('app_login');
+        }
 
-        $mailer->send($email);
-        return $this->redirectToRoute('login');
+        return $this->render('security/contact.html.twig', [
+            "form" => $form->createView()
+        ]);
     }
 
 }
